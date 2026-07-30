@@ -1,28 +1,19 @@
 #!/usr/bin/env python3
-"""抓取斗鱼一起看分类下所有影视直播间的流地址（并发版 + 增量保存）"""
-import subprocess
-import json
-import requests
-import os
-import sys
-from concurrent.futures import ThreadPoolExecutor, as_completed, wait
-import signal
+"""斗鱼一起看分类 - 只取1080P流"""
+import subprocess, json, requests, os, sys, re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 OUTPUT_FILE = "/tmp/iptv_update/douyu.json"
 os.makedirs("/tmp/iptv_update", exist_ok=True)
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+           'Referer': 'https://www.douyu.com/'}
 
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-    'Referer': 'https://www.douyu.com/'
-}
-
-# === 1. 获取斗鱼房间列表 ===
+# 获取房间列表
 all_rooms = []
-page = 1
-while True:
+for page in range(1, 20):
     try:
-        url = f'https://www.douyu.com/gapi/rkc/directory/mixList/2_208/{page}'
-        r = requests.get(url, headers=headers, timeout=15)
+        r = requests.get(f'https://www.douyu.com/gapi/rkc/directory/mixList/2_208/{page}',
+                        headers=headers, timeout=15)
         data = r.json()
         if not data.get('data') or not data['data'].get('rl'):
             break
@@ -32,124 +23,91 @@ while True:
         all_rooms.extend(rooms)
         if len(rooms) < 20:
             break
-        page += 1
     except Exception as e:
-        print(f"Douyu list API error: {e}", file=sys.stderr)
+        print(f"Douyu list error: {e}", file=sys.stderr)
         break
 
-print(f"Douyu: Found {len(all_rooms)} rooms total", flush=True)
+print(f"Douyu: {len(all_rooms)} rooms total", flush=True)
 
-# === 2. 过滤出影视相关房间 ===
-def is_movie_room(room_name, nickname):
-    name = (room_name + ' ' + nickname).lower()
-    movie_kw = ['电影', '电视', '剧', '影视', '综艺', '动漫', '音乐', 'mv',
-                '女团', '纪录片', '搞笑', '经典', '功夫', '港片', '周星驰',
-                '喜剧', '恐怖', '动作', '爱情', '科幻', '国漫', '动漫',
-                'kpop', '追剧', '影院', '娱乐', '小品', '怀旧', '解说']
-    skip_kw = ['游戏', 'lol', '英雄联盟', '王者荣耀', '吃鸡', '绝地求生',
-               '永劫', '原神', 'cf', 'csgo', 'dota', '炉石', 'lpl', 'kpl',
-               '赛事', '陪玩', '代练']
-    has_skip = any(kw in name for kw in skip_kw)
-    has_movie = any(kw in name for kw in movie_kw)
-    return has_movie and not has_skip
+# 过滤影视类
+MOVIE_KW = ['电影','电视','剧','影视','综艺','动漫','音乐','mv','女团','纪录片','搞笑',
+            '经典','功夫','港片','周星驰','喜剧','恐怖','动作','爱情','科幻','国漫',
+            'kpop','追剧','影院','娱乐','小品','怀旧','解说']
+SKIP_KW = ['游戏','lol','英雄联盟','王者荣耀','吃鸡','绝地求生','永劫','原神',
+           'cf','csgo','dota','炉石','lpl','kpl','赛事','陪玩','代练']
 
-movie_rooms = [r for r in all_rooms if is_movie_room(r.get('rn','') or '', r.get('nn','') or '')]
-print(f"Douyu: {len(movie_rooms)} are movie-related", flush=True)
-# Top30 by online count
+def is_movie(rn, nn):
+    name = (rn + ' ' + nn).lower()
+    return any(k in name for k in MOVIE_KW) and not any(k in name for k in SKIP_KW)
+
+movie_rooms = [r for r in all_rooms if is_movie(r.get('rn','') or '', r.get('nn','') or '')]
 movie_rooms.sort(key=lambda r: r.get("ol",0) or 0, reverse=True)
-movie_rooms = movie_rooms[:30]
-print(f"Douyu: Top 30 hottest movie rooms selected", flush=True)
-
+movie_rooms = movie_rooms[:180]  # 增加到180个以补偿1080P过滤损失
+print(f"Douyu: {len(movie_rooms)} movie rooms selected", flush=True)
 
 if not movie_rooms:
-    # 保存空结果并退出
-    with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
+    with open(OUTPUT_FILE, 'w') as f:
         json.dump([], f)
-    print("Douyu: No movie rooms found, exiting", flush=True)
     sys.exit(0)
 
-# === 3. 并发获取流地址 ===
-results = []
-results_lock = None  # not needed, CPython GIL protects list append
+# 1080P ONLY格式优先级 — 严格拒绝低于1080P的流
+def quality_score(profile):
+    p = profile.lower()
+    # 1080P及以上: 接受
+    if '4k' in p or '8k' in p: return 0
+    if '蓝光' in p: return 1       # 蓝光4M/蓝光8M等
+    if '1080' in p and '60' in p: return 2
+    if '1080' in p: return 3
+    # 以下全部拒绝 (超清/720P/高清/原画720P/原画360P/流畅)
+    return 100  # 拒绝
 
-def get_douyu_stream(room_info):
+def get_stream(room_info):
     room_id = str(room_info.get('rid', ''))
     room_name = room_info.get('rn', '') or ''
     nickname = room_info.get('nn', '') or ''
     if not room_id:
         return None
     try:
-        result = subprocess.run(
+        res = subprocess.run(
             ['ykdl', '--info', '--json', f'https://www.douyu.com/{room_id}'],
             capture_output=True, text=True, timeout=20
         )
-        output = result.stdout.strip()
-        if not output:
+        out = res.stdout.strip()
+        if not out:
             return None
-        info = json.loads(output)
+        info = json.loads(out)
         streams = info.get('streams', {})
         if not streams:
             return None
-
-        def quality_score(profile):
-            p = profile.lower()
-            if '1080' in p and '60' in p: return 0
-            if '1080' in p and '30' in p: return 1
-            if '1080' in p: return 2
-            if '4k' in p or '超清' in p: return 3
-            if '720' in p and '60' in p: return 4
-            if '720' in p and '30' in p: return 5
-            if '720' in p: return 6
-            if '高清' in p: return 7
-            if '原画' in p: return 8
-            return 9
-
         best_key = min(streams.keys(),
-                       key=lambda k: quality_score(streams[k].get('profile','') or streams[k].get('video_profile','')))
-        best_stream = streams[best_key]
-        src_list = best_stream.get('src', [])
-        if not src_list:
+                      key=lambda k: quality_score(streams[k].get('profile','') or streams[k].get('video_profile','') or k))
+        best = streams[best_key]
+        src = best.get('src', [])
+        if not src:
             return None
-        stream_url = src_list[0]
-        profile = best_stream.get('profile', '') or best_stream.get('video_profile', '') or ''
-
-        quality_tag = profile
-        if '1080' in profile and '60' in profile: quality_tag = '1080P60'
-        elif '1080' in profile and '30' in profile: quality_tag = '1080P30'
-        elif '1080' in profile: quality_tag = '1080P'
-        elif '720' in profile and '60' in profile: quality_tag = '720P60'
-        elif '720' in profile and '30' in profile: quality_tag = '720P30'
-        elif '720' in profile: quality_tag = '720P'
-        elif '超清' in profile: quality_tag = '超清'
-        elif '高清' in profile: quality_tag = '高清'
-        elif '原画' in profile: quality_tag = '原画'
-
-        return {"title": room_name, "nick": nickname, "url": stream_url,
-                "room_id": room_id, "quality": quality_tag}
-    except subprocess.TimeoutExpired:
-        pass
-    except json.JSONDecodeError:
-        pass
+        profile = best.get('profile', '') or best.get('video_profile', '') or best_key
+        # 严格1080P ONLY: 拒绝任何低于1080P的流
+        score = quality_score(profile)
+        if score >= 100:
+            print(f"  Skip {room_id}: {profile} (not 1080P)", flush=True)
+            return None
+        title = info.get('title', room_name).strip()
+        title = re.sub(r'[\\/:*?"<>|\t\n]', '', title)[:50] if title else room_name[:30]
+        return {"title": title, "nick": nickname, "url": src[0], "room_id": room_id, "quality": profile}
     except Exception as e:
-        print(f"  Error {room_id}: {e}", file=sys.stderr)
+        print(f"  Err {room_id}: {e}", file=sys.stderr)
     return None
 
-completed = 0
+results = []
 total = len(movie_rooms)
-with ThreadPoolExecutor(max_workers=5) as executor:
-    futures = {executor.submit(get_douyu_stream, room): room for room in movie_rooms}
-    for future in as_completed(futures):
-        result = future.result()
-        completed += 1
-        if result:
-            results.append(result)
-            print(f"  ✓ [{completed}/{total}] {result['title'][:30]:30s} [{result['quality']}]", flush=True)
-        else:
-            if completed % 10 == 0:
-                print(f"  ... {completed}/{total} processed", flush=True)
+with ThreadPoolExecutor(max_workers=10) as ex:
+    fut = {ex.submit(get_stream, rm): rm for rm in movie_rooms}
+    for f in as_completed(fut):
+        r = f.result()
+        if r:
+            results.append(r)
+            print(f'  OK {r["room_id"]} [{r["quality"]}] {r["title"][:30]}', flush=True)
 
-# 最终保存
 with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
     json.dump(results, f, ensure_ascii=False, indent=2)
-
-print(f"Douyu: Got {len(results)} valid streams, saved to {OUTPUT_FILE}", flush=True)
+print(f"Douyu: {len(results)} 1080P streams saved", flush=True)

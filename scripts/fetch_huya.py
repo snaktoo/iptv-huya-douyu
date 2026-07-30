@@ -1,64 +1,95 @@
 #!/usr/bin/env python3
-"""Fetch Huya streams from Yiqikan category"""
-import requests
-import re
-import base64
-import json
-import os
-import sys
+"""Fetch Huya streams 1080P only via API"""
+import requests, json, os, sys, subprocess, re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 OUTPUT_FILE = "/tmp/iptv_update/huya.json"
 os.makedirs("/tmp/iptv_update", exist_ok=True)
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-}
+headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 
-try:
-    r = requests.get("https://www.huya.com/g/2135", headers=headers, timeout=15)
-    html = r.text
-except Exception as e:
-    print(f"ERROR: {e}", file=sys.stderr)
-    sys.exit(1)
+# 使用Huya API获取一起看分类全部房间(分页)
+API_URL = "https://www.huya.com/cache.php?m=LiveList&do=getLiveListByPage&gameId=2135&page={}"
 
-room_ids = set()
-for m in re.finditer(r"https?://(?:www\.)?huya\.com/(\d+)", html):
-    rid = m.group(1)
-    if len(rid) >= 4:
-        room_ids.add(rid)
+rooms_1080p = []
 
-print(f"Huya: Found {len(room_ids)} room IDs", flush=True)
-
-results = []
-headers_m = {
-    "User-Agent": "Mozilla/5.0 (Linux; Android 13; SM-S9080) AppleWebKit/537.36 Mobile"
-}
-
-def get_stream(room_id):
+for page in range(1, 12):  # totalPage=11
     try:
-        r = requests.get(f"https://m.huya.com/{room_id}", headers=headers_m, timeout=10)
-        html = r.text
-        title = (re.search(r'"sRoomName"\s*:\s*"([^"]+)"', html) or [None, "Unknown"])[1]
-        nick = (re.search(r'"sNick"\s*:\s*"([^"]+)"', html) or [None, "Unknown"])[1]
-        ll_match = re.search(r'"liveLineUrl"\s*:\s*"([^"]+)"', html)
-        if ll_match:
-            decoded = base64.b64decode(ll_match.group(1)).decode("utf-8")
-            url = "https:" + decoded if decoded.startswith("/") else decoded
-            title = re.sub(r'[\/:*?"<>|]', "", title.replace("\t","").replace("\n","").strip())
-            return {"title": title, "nick": nick, "url": url, "room_id": room_id}
+        r = requests.get(API_URL.format(page), headers=headers, timeout=15)
+        data = r.json()
+        if data.get('status') != 200:
+            break
+        datas = data.get('data', {}).get('datas', [])
+        if not datas:
+            break
+        for room in datas:
+            room_id = str(room.get('profileRoom', '') or room.get('uid', ''))
+            if not room_id or len(room_id) < 4:
+                continue
+            is_bluray = room.get('isBluRay', '0')
+            if is_bluray == '1':
+                rooms_1080p.append({
+                    'room_id': room_id,
+                    'room_name': room.get('roomName', '').strip(),
+                    'nick': room.get('nick', '').strip(),
+                    'bluray_mbit': room.get('bluRayMBitRate', ''),
+                    'viewers': int(room.get('totalCount', '0').replace(',', '') or 0),
+                    'gid': room.get('gid', ''),
+                })
+        blu_count = sum(1 for d in datas if d.get('isBluRay') == '1')
+        print(f"Huya API page {page}: {len(datas)} rooms, {blu_count} blu-ray", flush=True)
     except Exception as e:
-        print(f"  Error {room_id}: {e}", file=sys.stderr)
+        print(f"Huya API page {page} error: {e}", file=sys.stderr)
+        break
+
+# 按观众数排序取前200个，提高效率同时保证质量
+rooms_1080p.sort(key=lambda x: x['viewers'], reverse=True)
+rooms_1080p = rooms_1080p[:200]
+
+print(f"Huya API: {len(rooms_1080p)} blu-ray rooms selected (top200 by viewers)", flush=True)
+
+QUAL_PRIO = ["BD6M", "BD4M", "BD"]
+
+def get_stream(room_info):
+    room_id = room_info['room_id']
+    try:
+        res = subprocess.run(['ykdl', '--info', '--json', f'https://www.huya.com/{room_id}'],
+                           capture_output=True, text=True, timeout=20)
+        out = res.stdout.strip()
+        if not out:
+            return None
+        info = json.loads(out)
+        streams = info.get('streams', {})
+        if not streams:
+            return None
+        best = None
+        for q in QUAL_PRIO:
+            if q in streams:
+                best = q; break
+        if not best:
+            return None
+        s = streams[best]
+        src = s.get('src', [])
+        if not src:
+            return None
+        title = room_info['room_name'] or info.get('title', s.get('title', '')).strip()
+        title = re.sub(r'[\\/:*?"<>|\t\n]', '', title)[:50]
+        if not title:
+            title = f"Room{room_id}"
+        return {"title": title, "nick": room_info['nick'], "url": src[0], "room_id": room_id, "quality": best}
+    except Exception as e:
+        print(f"  Err {room_id}: {e}", file=sys.stderr)
     return None
 
+results = []
 with ThreadPoolExecutor(max_workers=10) as ex:
-    futures = {ex.submit(get_stream, rid): rid for rid in room_ids}
-    for f in as_completed(futures):
+    fut = {ex.submit(get_stream, ri): ri for ri in rooms_1080p}
+    for f in as_completed(fut):
         r = f.result()
         if r:
             results.append(r)
-            print(f'  OK {r["room_id"]} - {r["title"][:30]}', flush=True)
+            print(f'  OK {r["room_id"]} [{r["quality"]}] {r["title"][:30]}', flush=True)
 
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     json.dump(results, f, ensure_ascii=False, indent=2)
-print(f"Huya: {len(results)} valid streams", flush=True)
+print(f"Huya: {len(results)} 1080P streams saved", flush=True)
