@@ -241,6 +241,34 @@ CCTV_CHANNELS = [
 ]
 
 # ===== 读取数据并分类 =====
+def shorten_title(title):
+    """简化频道名称：去装饰符号、截短"""
+    s = title.strip()
+    # 针对斗鱼"xxx的直播间 - yyy"格式：去掉"xxx的直播间"部分
+    s = re.sub(r'^[^\-—]*?的直播间\s*[-—]\s*', '', s)
+    # 针对"用户xxx的直播间 - yyy"格式
+    s = re.sub(r'^用户\d+的直播间\s*[-—]\s*', '', s)
+    # 去掉开头「【『《[(（等装饰符号
+    s = re.sub(r'^[「【『《\[\(（]+', '', s)
+    # 去掉结尾」】』》\]\)）]+装饰符号
+    s = re.sub(r'[」】』》\]\)）]+$', '', s)
+    # 去掉「主播名 - 」这类前缀（直到遇到第一个中文破折号/连词符前的文字）
+    s = re.sub(r'^[^\-—\u4e00-\u9fff]*?[-—]\s*', '', s)
+    # 去掉尾部的「 - 主播名/房间描述/后缀」
+    s = re.sub(r'\s*\[.*?\]\s*$', '', s)
+    # 去掉尾部「 - xxx」格式（短后缀）
+    s = re.sub(r'\s*[-—]\s*(?=[a-zA-Z0-9\u4e00-\u9fff]{0,6}$)', '', s)
+    # 清理残留的单边装饰符号
+    s = re.sub(r'[「」【】『』《》\[\]\(\)（）]', '', s)
+    # 去掉重复内容（如"米尼影院经典电视剧米尼影院"→"米尼影院经典电视剧"）
+    # 如果后半段和前半段一样，去重
+    s = re.sub(r'^(.{3,}?)\1$', r'\1', s)
+    # 去掉多余空格
+    s = re.sub(r'\s+', ' ', s).strip()
+    if not s:
+        s = title.strip()[:20]
+    return s[:25]
+
 def load_and_classify(filepath, source_name):
     channels = []
     if not os.path.exists(filepath):
@@ -248,15 +276,18 @@ def load_and_classify(filepath, source_name):
     with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
     for ch in data:
-        title = ch.get('title', 'Unknown').replace('\\n', ' ').replace('\\r', '').strip()[:40]
+        title = ch.get('title', 'Unknown').replace('\\n', ' ').replace('\\r', '').strip()
         url = ch.get('url', '')
         quality = ch.get('quality', '')
         nick = ch.get('nick', '')
         if not url:
             continue
         if not title or title == 'Unknown':
-            title = nick[:30] or f"{source_name}_{ch.get('room_id','')}"
-        display = f"{title} [{quality}]" if quality else title
+            title = nick[:20] or f"{source_name}_{ch.get('room_id','')}"
+        # 简化quality标记
+        q_short = quality.replace('原画', '').replace('蓝光', '').strip()
+        short = shorten_title(title)
+        display = f"{short} [{q_short}]" if q_short else short
         cat = classify_channel(title, nick, quality)
         channels.append((cat, display, url, quality))
     return channels
