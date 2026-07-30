@@ -271,6 +271,34 @@ CCTV_NAMES = {
     "CCTV-17": "CCTV-17 农业农村", "CCTV17": "CCTV-17 农业农村",
 }
 
+def url_matches_channel(short, url):
+    """检查URL路径是否与频道编号匹配，防止频道映射错误（如CCTV-1下混入cctv14hd）"""
+    url_lower = url.lower()
+    # 如果URL路径中不包含cctv字样，无法校验，放行
+    if '/cctv' not in url_lower and 'cctv' not in url_lower.split('/')[-1]:
+        return True
+    # 提取声明频道编号
+    short_num = short.replace('CCTV-', '').replace('+', 'p')  # e.g. "5p" for CCTV-5+
+    # 提取URL中的cctv编号
+    m = re.search(r'cctv(\d+)\+?', url_lower)
+    if m:
+        url_num = m.group(1)
+        # CCTV-5+ 特殊处理：URL中可能是 cctv5p 或 cctv5+
+        if short_num == '5p':
+            return url_num == '5' and ('cctv5p' in url_lower or 'cctv5+' in url_lower)
+        # CCTV-5 特殊处理：排除 cctv5p (那是5+的)
+        if short_num == '5' and url_num == '5':
+            return 'cctv5p' not in url_lower and 'cctv5+' not in url_lower
+        return url_num == short_num
+    return True
+
+def is_known_dead_source(url):
+    """检查是否为已知不可用的源"""
+    # ottrrs 中国移动运营商源在当前环境下全部返回空响应
+    if 'ottrrs.hl.chinamobile.com' in url:
+        return True
+    return False
+
 def download_m3u(name, url, local_path):
     """下载单个m3u文件"""
     import urllib.request
@@ -283,7 +311,10 @@ def download_m3u(name, url, local_path):
         return False
 
 def parse_m3u_to_cctv(filepath, source_name):
-    """解析 m3u 文件，提取 CCTV 频道URL，返回 {short: [(score, url)]}"""
+    """
+    解析 m3u 文件，提取 CCTV 频道URL，返回 {short: [(score, url)]}
+    改进：优先使用 tvg-name 属性识别频道名，提高准确性
+    """
     channels = {}
     if not os.path.exists(filepath):
         return channels
@@ -294,9 +325,29 @@ def parse_m3u_to_cctv(filepath, source_name):
             if line.startswith('#EXTINF:'):
                 current_extinf = line
             elif line.startswith('http') and current_extinf:
-                m = re.search(r'CCTV[-]?(\d+[+]?)', current_extinf)
-                if m:
-                    short = 'CCTV-' + m.group(1)
+                short = None
+                # 策略1：优先匹配 tvg-name 属性（最精确）
+                m_tvg = re.search(r'tvg-name="CCTV[-]?(\d+\+?)"', current_extinf, re.IGNORECASE)
+                if m_tvg:
+                    short = 'CCTV-' + m_tvg.group(1)
+                else:
+                    # 策略2：匹配逗号后的显示名称
+                    m_display = re.search(r',CCTV[-]?(\d+\+?)', current_extinf)
+                    if m_display:
+                        short = 'CCTV-' + m_display.group(1)
+                    else:
+                        # 策略3：任意位置匹配（兼容性）
+                        m_any = re.search(r'CCTV[-]?(\d+\+?)', current_extinf)
+                        if m_any:
+                            short = 'CCTV-' + m_any.group(1)
+                if short:
+                    # 频道映射校验：URL路径必须与声明的频道名一致
+                    if not url_matches_channel(short, line):
+                        # 记录已过滤的映射错误（调试用）
+                        pass
+                        continue
+                    if is_known_dead_source(line):
+                        continue
                     if short not in channels:
                         channels[short] = []
                     score = 0
@@ -309,8 +360,6 @@ def parse_m3u_to_cctv(filepath, source_name):
                         score += 70
                     if 'hd' in line.lower() or '超清' in line:
                         score += 30
-                    if 'ottrrs' in line:  # 移动运营商源
-                        score += 20
                     if 'testpub' in line or 'test2025' in line:
                         score += 15
                     channels[short].append((score, line))
@@ -318,14 +367,17 @@ def parse_m3u_to_cctv(filepath, source_name):
     return channels
 
 def fetch_cctv_sources():
-    """从所有源库拉取央视源，每频道返回多条URL"""
-    all_cctv = {}  # short -> set of urls (for dedup)
+    """
+    从所有源库拉取央视源，每频道返回多条URL
+    改进：URL-频道名校验 + 过滤不可用源 + 排序优化
+    """
+    all_cctv = {}  # short -> [(score, url, source_type)]
 
-    # 1. 官方CDN保底（最稳定）
+    # 1. 官方CDN保底（最稳定，但仅720p）
     for short, url in OFFICIAL_SOURCES.items():
-        all_cctv.setdefault(short, set()).add(url)
+        all_cctv.setdefault(short, []).append((10, url, 'official'))
 
-    # 2. 从多个外部源库解析（优先使用已预下载的缓存）
+    # 2. 从多个外部源库解析
     tmpdir = "/tmp/iptv_update/cctv_sources"
     os.makedirs(tmpdir, exist_ok=True)
 
@@ -337,7 +389,6 @@ def fetch_cctv_sources():
 
     for name, local_path, remote_url in source_files:
         if not os.path.exists(local_path):
-            # 尝试下载
             import urllib.request
             try:
                 print(f"  [CCTV] 从 {name} 下载...")
@@ -347,11 +398,12 @@ def fetch_cctv_sources():
                 continue
         parsed = parse_m3u_to_cctv(local_path, name)
         for short, items in parsed.items():
+            # 按评分降序，取前3
             items.sort(key=lambda x: -x[0])
             for score, u in items[:3]:
-                all_cctv.setdefault(short, set()).add(u)
+                all_cctv.setdefault(short, []).append((score, u, 'external'))
 
-    # 4. 构建结果
+    # 3. 去重+排序：同域名/路径只保留最高分那条
     order = [f'CCTV-{i}' for i in range(1, 18)]
     idx_5 = order.index('CCTV-5') + 1
     order.insert(idx_5, 'CCTV-5+')
@@ -361,20 +413,25 @@ def fetch_cctv_sources():
     for short in order:
         if short not in all_cctv:
             continue
-        urls = list(all_cctv[short])
-        # 去重：相同域名+路径(去参)只保留一个
-        seen = set()
-        unique_urls = []
-        for u in urls:
-            key = u.split('?')[0]
-            if key not in seen:
-                seen.add(key)
-                unique_urls.append(u)
+        items = all_cctv[short]
+        # 去重：相同去参路径只保留最高分
+        seen = {}
+        for score, url, src_type in items:
+            key = url.split('?')[0]
+            if key not in seen or score > seen[key][0]:
+                seen[key] = (score, url, src_type)
+        # 排序：高分优先（外部源在前），官方CDN放最后作为保底
+        sorted_items = sorted(seen.values(), key=lambda x: (-x[0], 0 if x[2] == 'external' else 1))
+        # 每个频道保留最多4条（优先外部源）
+        external_urls = [u for s, u, t in sorted_items if t == 'external']
+        official_urls = [u for s, u, t in sorted_items if t == 'official']
+        # 外部源最多3条，官方CDN最多1条保底
+        final_urls = external_urls[:3] + official_urls[:1]
         display = CCTV_NAMES.get(short, short)
-        result.append((display, short, unique_urls))
-        total_urls += len(unique_urls)
+        result.append((display, short, final_urls))
+        total_urls += len(final_urls)
 
-    print(f"  [CCTV] 从 {len(CCTV_SOURCE_URLS)}+2 个源库聚合了 {len(result)} 个频道，共 {total_urls} 条备选URL")
+    print(f"  [CCTV] 聚合 {len(result)} 个频道，共 {total_urls} 条验后URL（已过映射校验+去重）")
     return result
 
 # ===== 读取数据并分类 =====
