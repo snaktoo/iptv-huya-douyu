@@ -218,12 +218,18 @@ def classify_channel(title, nick='', quality=''):
     return "综合影视"
 
 
-# ===== 央视总台18个官方频道 =====
-CCTV_CHANNELS = [
+# ===== 央视源：从 best-fan/iptv-sources 自动获取（每日更新） =====
+# 若获取失败则使用官方CDN保底（720p）
+
+CCTV_SOURCES_URL = "https://raw.githubusercontent.com/best-fan/iptv-sources/main/cn_cctv.m3u8"
+CCTV_LOCAL_CACHE = "/tmp/iptv_update/cn_cctv.m3u8"
+
+# 官方保底源（已知最高720p）
+FALLBACK_CCTV = [
     ("CCTV-1 综合", "CCTV1", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv1_1/index.m3u8?b=200-2100"),
     ("CCTV-2 财经", "CCTV2", "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv2_1/index.m3u8?b=200-2100"),
     ("CCTV-3 综艺", "CCTV3", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv3_1/index.m3u8?b=200-2100"),
-    ("CCTV-4 中文国际（亚）", "CCTV4", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv4_1/index.m3u8?b=200-2100"),
+    ("CCTV-4 中文国际", "CCTV4", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv4_1/index.m3u8?b=200-2100"),
     ("CCTV-5 体育", "CCTV5", "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv5_1/index.m3u8?b=200-2100"),
     ("CCTV-5+ 体育赛事", "CCTV5+", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv5plus_1/index.m3u8?b=200-2100"),
     ("CCTV-6 电影", "CCTV6", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv6_1/index.m3u8?b=200-2100"),
@@ -239,6 +245,100 @@ CCTV_CHANNELS = [
     ("CCTV-16 奥林匹克", "CCTV16", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv16_1/index.m3u8?b=200-2100"),
     ("CCTV-17 农业农村", "CCTV17", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv17_1/index.m3u8?b=200-2100"),
 ]
+
+# 频道显示名称映射
+CCTV_NAMES = {
+    "CCTV-1": "CCTV-1 综合", "CCTV1": "CCTV-1 综合",
+    "CCTV-2": "CCTV-2 财经", "CCTV2": "CCTV-2 财经",
+    "CCTV-3": "CCTV-3 综艺", "CCTV3": "CCTV-3 综艺",
+    "CCTV-4": "CCTV-4 中文国际", "CCTV4": "CCTV-4 中文国际",
+    "CCTV-5": "CCTV-5 体育", "CCTV5": "CCTV-5 体育",
+    "CCTV-5+": "CCTV-5+ 体育赛事", "CCTV5+": "CCTV-5+ 体育赛事",
+    "CCTV-6": "CCTV-6 电影", "CCTV6": "CCTV-6 电影",
+    "CCTV-7": "CCTV-7 国防军事", "CCTV7": "CCTV-7 国防军事",
+    "CCTV-8": "CCTV-8 电视剧", "CCTV8": "CCTV-8 电视剧",
+    "CCTV-9": "CCTV-9 纪录", "CCTV9": "CCTV-9 纪录",
+    "CCTV-10": "CCTV-10 科教", "CCTV10": "CCTV-10 科教",
+    "CCTV-11": "CCTV-11 戏曲", "CCTV11": "CCTV-11 戏曲",
+    "CCTV-12": "CCTV-12 社会与法", "CCTV12": "CCTV-12 社会与法",
+    "CCTV-13": "CCTV-13 新闻", "CCTV13": "CCTV-13 新闻",
+    "CCTV-14": "CCTV-14 少儿", "CCTV14": "CCTV-14 少儿",
+    "CCTV-15": "CCTV-15 音乐", "CCTV15": "CCTV-15 音乐",
+    "CCTV-16": "CCTV-16 奥林匹克", "CCTV16": "CCTV-16 奥林匹克",
+    "CCTV-17": "CCTV-17 农业农村", "CCTV17": "CCTV-17 农业农村",
+}
+
+def fetch_and_parse_cctv():
+    """从 best-fan/iptv-sources 下载央视源并解析，返回 [(显示名, 短名, URL)]"""
+    import urllib.request
+    fetched = False
+    try:
+        print("  [CCTV] 正在从 best-fan/iptv-sources 获取最新央视源...")
+        urllib.request.urlretrieve(CCTV_SOURCES_URL, CCTV_LOCAL_CACHE)
+        fetched = True
+        print(f"  [CCTV] 下载成功: {CCTV_LOCAL_CACHE}")
+    except Exception as e:
+        print(f"  [CCTV] 下载失败: {e}")
+        # 使用本地缓存的版本（如果有）
+        if os.path.exists(CCTV_LOCAL_CACHE):
+            fetched = True
+            print(f"  [CCTV] 使用本地缓存: {CCTV_LOCAL_CACHE}")
+
+    if not fetched:
+        print("  [CCTV] 无法获取外部源，使用官方CDN保底（720p）")
+        return FALLBACK_CCTV
+
+    # 解析 m3u8
+    channels = {}  # short_name -> [(score, url)]
+    current_extinf = None
+    with open(CCTV_LOCAL_CACHE, 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            if line.startswith('#EXTINF:'):
+                current_extinf = line
+            elif line.startswith('http') and current_extinf:
+                m = re.search(r'CCTV[-]?(\d+[+]?)', current_extinf)
+                if m:
+                    short = 'CCTV-' + m.group(1)
+                    if short not in channels:
+                        channels[short] = []
+                    # 评分：越高越好
+                    score = 0
+                    if '1080p' in current_extinf or '1080P' in current_extinf:
+                        score += 100
+                    if '3m1080p' in line.lower():
+                        score += 80
+                    if '/1080p/' in line.lower() or '1080p' in line.lower():
+                        score += 70
+                    if 'hd' in line.lower() or 'HD' in line:
+                        score += 30
+                    if 'fanmingming' in current_extinf:
+                        score += 50
+                    if 'myqcloud' in line or 'volcfcdn' in line or 'bdydns' in line:
+                        score += 10  # 官方CDN保底
+                    channels[short].append((score, line))
+                current_extinf = None
+
+    if not channels:
+        print("  [CCTV] 解析失败，使用官方CDN保底（720p）")
+        return FALLBACK_CCTV
+
+    # 为每个频道选择最佳源
+    result = []
+    for short, items in channels.items():
+        items.sort(key=lambda x: -x[0])  # 分数高的优先
+        best_url = items[0][1]
+        # 查找显示名
+        display = CCTV_NAMES.get(short, short)
+        result.append((display, short, best_url))
+
+    # 按标准顺序排序
+    order = [f'CCTV-{i}' for i in range(1, 18)] + ['CCTV-5+']
+    result.sort(key=lambda x: order.index(x[1]) if x[1] in order else 999)
+
+    found = len(result)
+    print(f"  [CCTV] 从外部源获取到 {found} 个频道（按质量评分择优选用）")
+    return result
 
 # ===== 读取数据并分类 =====
 def shorten_title(title):
@@ -295,6 +395,10 @@ def load_and_classify(filepath, source_name):
 huya_channels = load_and_classify(HUYA_FILE, "Huya")
 douyu_channels = load_and_classify(DOUYU_FILE, "Douyu")
 
+# ===== 获取央视源（自动选择最佳可用源） =====
+CCTV_CHANNELS = fetch_and_parse_cctv()
+cctv_source_type = "自动获取（最优质量）" if CCTV_CHANNELS is not FALLBACK_CCTV else "官方CDN保底（720p）"
+
 # ===== 按分类组名排序输出 =====
 # 自定义分类显示顺序
 CAT_ORDER = [
@@ -314,8 +418,8 @@ now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 lines.append('#EXTM3U')
 lines.append(f'# 综合IPTV直播源 (央视 + 虎牙1080P + 斗鱼1080P)')
 lines.append(f'# 生成时间: {now_str}')
-lines.append('# 来源: 央视网 tv.cctv.com/live | 虎牙一起看分类 | 斗鱼一起看分类')
-lines.append('# 清晰度: 央视720p / 虎牙1080P蓝光 / 斗鱼1080P原画')
+lines.append('# 来源: best-fan/iptv-sources（央视动态择优）| 虎牙一起看分类 | 斗鱼一起看分类')
+lines.append(f'# 清晰度: 央视{cctv_source_type} / 虎牙1080P蓝光 / 斗鱼1080P原画')
 lines.append('# 自动更新: GitHub Actions 每30分钟')
 lines.append('# 分类: 按影视内容类型自动归类')
 lines.append('')
