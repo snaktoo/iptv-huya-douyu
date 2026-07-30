@@ -21,18 +21,13 @@ jobs:
           pip install requests
           pip install ykdl
       - name: Create output dir
-        run: mkdir -p /tmp/iptv_update/cctv_sources
-      - name: Pre-download CCTV sources
-        run: |
-          curl -sL --retry 3 'https://raw.githubusercontent.com/best-fan/iptv-sources/main/cn_cctv.m3u8' -o /tmp/iptv_update/cctv_sources/bestfan.m3u
-          curl -sL --retry 3 'https://raw.githubusercontent.com/cs3306/IPTV-Sources/main/data/output/iptv_collection.m3u' -o /tmp/iptv_update/cctv_sources/cs3306_IPTV-Sources.m3u
-          curl -sL --retry 3 'https://raw.githubusercontent.com/BurningC4/Chinese-IPTV/master/TV-IPV4.m3u' -o /tmp/iptv_update/cctv_sources/BurningC4.m3u
+        run: mkdir -p /tmp/iptv_update
       - name: Fetch Huya
         run: python scripts/fetch_huya.py
       - name: Fetch Douyu
         run: python scripts/fetch_douyu.py
-      - name: Generate M3U
-        run: python scripts/merge_m3u.py
+      - name: Generate M3U (runtime-verified)
+        run: timeout 300 python scripts/merge_m3u.py
       - name: Copy M3U
         run: |
           if [ -f /tmp/iptv_update/huya_douyu_movie.m3u ]; then
