@@ -27,7 +27,7 @@ jobs:
       - name: Fetch Douyu
         run: python scripts/fetch_douyu.py
       - name: Generate M3U (runtime-verified)
-        run: timeout 300 python scripts/merge_m3u.py
+        run: timeout 600 python scripts/merge_m3u.py
       - name: Copy M3U
         run: |
           if [ -f /tmp/iptv_update/huya_douyu_movie.m3u ]; then
