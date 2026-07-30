@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""合并虎牙、斗鱼、央视直播源为统一M3U播放列表"""
+"""合并虎牙、斗鱼、央视直播源为统一M3U播放列表 — 按影视内容分类"""
 import json
 import os
+import re
 from datetime import datetime
 
 HUYA_FILE = "/tmp/iptv_update/huya.json"
@@ -11,7 +12,213 @@ FINAL_FILE = "/sdcard/Download/huya_douyu_movie.m3u"
 
 os.makedirs("/tmp/iptv_update", exist_ok=True)
 
-# ===== 央视总台17个官方频道（静态，央视网官方CDN） =====
+# ===== 智能内容分类器 =====
+# 按优先级从高到低匹配，返回 (分类组名, 排序键)
+
+def classify_channel(title, nick='', quality=''):
+    """根据标题和昵称分析频道类别"""
+    text = (title + ' ' + nick).lower()
+    # 去除特殊字符和房间标识
+    text_clean = re.sub(r'[「」【】『』《》\[\]\-_:：()（）！!，,。.、？?]', ' ', text)
+
+    checks = [
+        # (分类组名, 关键词列表)
+        ("动漫", [
+            '动漫','动画','国漫','蜡笔小新','海绵宝宝','四驱兄弟','火影','海贼王',
+            '龙珠','柯南','宝可梦','数码宝贝','海贼','航海王','一拳超人','斗破苍穹',
+            '斗罗大陆','全职高手','鬼灭','咒术','进击的巨人','死神','哆啦a梦','哆啦',
+            '猫和老鼠','中华小当家','网球王子','七龙珠','龙珠超','精灵宝可梦',
+            '樱桃小丸子','名侦探柯南','灌篮高手','圣斗士','高达','eva','奥特曼',
+            '假面骑士','皮卡丘','海贼','妖尾','妖精的尾巴','全职猎人','银魂',
+            'jojo','数码宝贝','神奇宝贝','口袋妖怪','宠物小精灵','一拳超人',
+            '食戟','齐木','关于我转生','转生','史莱姆','overlord','fate',
+            're:','re0','从零开始的','魔女','骨王','萌王','无职转生',
+            '鬼灭之刃','咒术回战','进击的巨人','怪兽','机甲','萝卜番',
+            '国漫','腾讯动漫','bilibili动漫','哔哩哔哩番剧','原创动画',
+            '斗宗强者','萧炎','超级赛亚人','孙捂空','武魂','魂环',
+            '忍道','影分身','查克拉','路飞','索隆','鸣人','佐助',
+            '犬夜叉','美食的俘虏','驱魔少年','家庭教师','黑执事',
+            '鲁鲁修','叛逆的','苍穹之法芙娜','魔法少女','奈叶',
+            'fate','型月','月姬','空之境界','fgo','明日方舟',
+            '崩坏','原神','星穹铁道','碧蓝航线','少女前线',
+            '斗破','斗罗','吞噬星空','完美世界','遮天','凡人修仙',
+            '仙逆','一念永恒','修罗','武动乾坤','大主宰',
+            '四海鲸骑','灵笼','三体','时光代理人','伍六七',
+            '狐妖小红娘','一人之下','镇魂街','刺客伍六七',
+            '大王饶命','全球高考','万族之劫','诡秘之主',
+            '二次元','番剧','新番','追番','漫画','漫改','轻改',
+        ]),
+        ("音乐", [
+            '音乐','mv','kpop','女团','演唱会','点歌','歌曲','歌手','乐坛',
+            '歌单','听歌','翻唱','弹唱','乐器','钢琴','吉他','乐队',
+            'dj','电音','remix','hiphop','说唱','rap','民谣','流行音乐',
+            '经典老歌','新歌','好歌','音乐频道','音乐台','点播','点歌台',
+            '唱歌','奏乐','演奏','声乐','歌舞','舞曲','歌舞表演',
+        ]),
+        ("体育", [
+            '斯诺克','nba','cba','中超','英超','西甲','意甲','德甲','法甲',
+            '欧冠','亚冠','世界杯','奥运会','拳击','ufc','格斗','赛车','f1',
+            '自行车','网球','高尔夫','乒乓球','羽毛球','台球','篮球','足球',
+            '排球','橄榄球','冰球','电竞','lol','英雄联盟','王者荣耀','kpl',
+            'dota','csgo','绝地求生','吃鸡','pubg','lpl','s赛','msi',
+            '赛事','比赛','体育','竞技','运动','体育频道',
+        ]),
+        ("恐怖", [
+            '恐怖','惊悚','灵异','鬼片','鬼故事','僵尸','僵尸片','林正英',
+            '英叔','僵尸道长','恐怖电影','恐怖片','惊悚片','吓人','可怕',
+            '血腥','暴力血腥','山村老尸','午夜凶铃','咒怨','厉鬼','鬼魂',
+            '恐怖故事','怪谈','聊斋','鬼吹灯','盗墓笔记','盗墓','摸金',
+            '半夜有鬼','有鬼','怨灵','凶宅','阴森','鬼屋','闹鬼',
+        ]),
+        ("喜剧", [
+            '喜剧','搞笑','爆笑','幽默','小品','相声','脱口秀','开心','欢乐',
+            '好笑','笑死','星爷','周星驰','喜剧之王','沈腾','马丽','贾玲',
+            '赵本山','宋小宝','小沈阳','德云社','郭德纲','于谦','岳云鹏',
+            '开心麻花','麻花','无厘头','喜剧片','欢乐喜剧人','笑傲江湖',
+            '陈佩斯','朱时茂','黄渤','徐峥','王宝强','囧','泰囧',
+            '憨豆','金凯瑞','搞笑剧','喜剧电影','爆笑喜剧',
+            '炊事班','马大帅','彪哥','东北一家人','五福星','福星',
+            '夏雪夏雨夏冰雹','爱情公寓','武林外传','家有儿女',
+            '编辑部','故事','搞笑视频','欢乐','乐呵','段子',
+        ]),
+        ("纪录片", [
+            '纪录片','纪实','探索','动物世界','国家地理','bbc','discovery',
+            '舌尖上的','风味','人生一串','早餐中国','历史那些事',
+            '我在故宫','如果国宝','自然','科学','宇宙','地球',
+        ]),
+        ("悬疑", [
+            '悬疑','推理','侦探','刑侦','破案','谍战','烧脑','狄仁杰','元芳',
+            '神探','福尔摩斯','悬案','心理罪','法医','探案','犯罪心理',
+            '白夜追凶','隐秘的角落','沉默的真相','无证之罪','潘粤明',
+            '破冰行动','人民的名义','扫黑','案发现场','鉴证','重案',
+            '刑事侦缉','洗冤录','大宋提刑官','包青天','少年包青天',
+            '漫长的季节','毛骗','雅贼','胡八一','破案','疑案',
+            '迷案','谜案','真相','秘密','卧底','潜伏','伪装者',
+        ]),
+("战争/军事", [
+            '军事','抗战','特种兵','战争','抗日','军人','革命','红军',
+            '八路军','新四军','志愿军','亮剑','士兵突击','火蓝刀锋',
+            '我的团长我的团','红海行动','战狼','长津湖','八佰',
+            '大决战','解放','建国大业','建党伟业','辛亥革命',
+            '雪豹','黑狐','风影','猎豹','利剑','神枪','狙击',
+            '黎明之前','潜伏','伪装者','风筝','悬崖','胜算',
+            '地下党','红色','谍战','铁道','游击','地雷战',
+            '地道战','小兵张嘎','飞虎','特战','雷霆','突击',
+            '海军','空军','陆军','部队','军营','当兵',
+            '烈火','英雄','消防','救援','紧急','营救',
+            '老李的意大利炮','李云龙','楚云飞','座山雕',
+            '渗透','智者','硬汉','铁血','军旅','兵王',
+            '特种部队','利刃','出鞘','战地','战场',
+        ]),
+        ("古装/武侠", [
+            '古装','武侠','江湖','金庸','古龙','梁羽生','还珠格格','甄嬛',
+            '芈月','大秦','大唐','大明','三国','水浒','水浒传','西游',
+            '西游记','红楼梦','封神','封神榜','聊斋','新白娘子',
+            '雍正','乾隆','康熙','康熙微服','还珠','如懿','延禧',
+            '宫锁','步步惊心','仙剑','轩辕剑','剑侠','风云',
+            '武林','天龙八部','射雕','神雕','倚天','笑傲','鹿鼎记',
+            '侠客行','连城诀','碧血剑','雪山飞狐','飞狐外传',
+            '楚留香','陆小凤','绝代双骄','小鱼儿','花无缺',
+            '霍元甲','陈真','精武门','叶问','黄飞鸿','方世玉',
+            '少林','武当','峨眉','丐帮','魔教','锦衣卫','东厂',
+            '范闲','庆余年','魏璎珞','韦小宝','懿症','圣母传',
+            '李淳罡','雪中悍刀行','齐天大圣','孙悟空','大圣',
+            '唐三藏','唐僧','悟','水浒','梁山','108好汉',
+            '喜来乐','纪晓岚','和珅','铁齿铜牙','乾隆微服',
+            '唐朝','唐朝好男人','大盛魁','一代枭雄','枭雄',
+            '神雕侠侣','神貂侠侣','雕侠侣','陈晓陈妍希',
+            '李世民','秦始皇','汉武帝','朱元璋','崇祯',
+            '大明王朝','大秦帝国','汉武大帝','康熙帝国',
+            '琅琊榜','鹤唳华亭','锦绣未央','楚乔传',
+            '滚滚长江','东逝水','临江仙','三国演义',
+            '白鹿原','白姓鹿姓','恩怨纷争',
+        ]),
+        ("科幻", [
+            '科幻','未来','异形','铁血战士','机械','赛博朋克','超级英雄',
+            '漫威','marvel','dc','复仇者','变形金刚','星际','星球大战',
+            '星球','银翼杀手','黑客帝国','终结者','阿凡达','侏罗纪',
+            '哥斯拉','金刚','环太平洋','太空','宇宙','外星','穿越',
+            '时间旅行','平行宇宙','奇异','黑镜','爱死机','科幻片',
+        ]),
+        ("动作", [
+            '动作','武打','功夫','格斗','打斗','成龙','成龍','李连杰','甄子丹',
+            '洪金宝','吴京','动作电影','暴力','热血','动作片','硬汉',
+            '警匪','黑帮','港片动作','飞车','追捕','枪战','英雄',
+            '敢死队','第一滴血','兰博','速度与激情','飙车',
+            '我要打十个','叶问','刘德华','梁朝伟','周润发','赌神','赌圣',
+            '反贪风暴','寒战','扫毒','使徒行者','无间道',
+            '古惑仔','洪兴','铜锣湾','陈浩南',
+            '港片','港产','激战','搏击','格斗技',
+        ]),
+        ("综艺", [
+            '综艺','真人秀','跑男','极限挑战','向往的生活','歌手','中国好声音',
+            '爸爸去哪儿','王牌对王牌','五哈','奔跑吧','极挑','我们的歌',
+            '乘风破浪','披荆斩棘','哥哥','姐姐','明星大侦探','密室大逃脱',
+            '中餐厅','亲爱的客栈','青春环游记','喜剧大赛','脱口秀大会',
+            '吐槽大会','乐队的夏天','中国新说唱','这就是街舞',
+            '非诚勿扰','最强大脑','一站到底','天天向上','快乐大本营',
+            'running man','无限挑战','大逃脱','新西游记',
+        ]),
+        ("解说", [
+            '解说','说电影','说剧','讲电影','速看','一口气','n分钟',
+            '带你看','影评','电影解说','影视解说','几分钟看完',
+            '快速看完','带你了解','深度解析','影视杂谈',
+        ]),
+    ]
+
+    for category, keywords in checks:
+        for kw in keywords:
+            if kw in text_clean:
+                return category
+
+    # ===== 兜底：根据大范围关键词判断 =====
+    # 电影类
+    movie_kw = ['电影','影院','大片','4k','观影','影城','影厅','影视',
+                '贺岁','王晶','导演','主演','港片','港产',
+                '刘德华','梁朝伟','周润发','成龙','李连杰','甄子丹',
+                '星爷','周星驰','赌神','赌圣']
+    for kw in movie_kw:
+        if kw in text_clean:
+            return "电影"
+
+    # 电视剧类
+    tv_kw = ['剧','电视剧','追剧','连续剧','tvb','神剧','下饭','剧集',
+             '韩剧','日剧','美剧','英剧','国产剧','台剧',
+             '我的前半生','情满四合院','老农民','东北一家人','马大帅',
+             '都挺好','苏大强','漫长的季节','你是我的荣耀',
+             '欢乐颂','5个','睡在我上铺','上铺的兄弟',
+             '围城','主角','剧情','年代剧',
+             '这瓜保熟','刘华强','征服','狂飙']
+    for kw in tv_kw:
+        if kw in text_clean:
+            return "电视剧"
+
+    # 经典/怀旧
+    classic_kw = ['经典','怀旧','老片','童年','回忆','老电影','重映',
+                  '经典电影','怀旧剧场']
+    for kw in classic_kw:
+        if kw in text_clean:
+            return "经典电影"
+
+    # 爱情
+    love_kw = ['爱情','恋爱','言情','甜剧','虐恋','纯爱',
+               '几千年只为复活','复活妻子','挚爱','浪漫']
+    for kw in love_kw:
+        if kw in text_clean:
+            return "爱情/情感"
+
+    # 游戏
+    game_kw = ['游戏','gaming','play','直播游戏',
+               '黑神话','悟空','文化交流','游戏厅','电玩']
+    for kw in game_kw:
+        if kw in text_clean:
+            return "游戏"
+
+    # 无法分类的归入综合
+    return "综合影视"
+
+
+# ===== 央视总台18个官方频道 =====
 CCTV_CHANNELS = [
     ("CCTV-1 综合", "CCTV1", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv1_1/index.m3u8?b=200-2100"),
     ("CCTV-2 财经", "CCTV2", "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv2_1/index.m3u8?b=200-2100"),
@@ -33,6 +240,44 @@ CCTV_CHANNELS = [
     ("CCTV-17 农业农村", "CCTV17", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv17_1/index.m3u8?b=200-2100"),
 ]
 
+# ===== 读取数据并分类 =====
+def load_and_classify(filepath, source_name):
+    channels = []
+    if not os.path.exists(filepath):
+        return channels
+    with open(filepath, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    for ch in data:
+        title = ch.get('title', 'Unknown').replace('\\n', ' ').replace('\\r', '').strip()[:40]
+        url = ch.get('url', '')
+        quality = ch.get('quality', '')
+        nick = ch.get('nick', '')
+        if not url:
+            continue
+        if not title or title == 'Unknown':
+            title = nick[:30] or f"{source_name}_{ch.get('room_id','')}"
+        display = f"{title} [{quality}]" if quality else title
+        cat = classify_channel(title, nick, quality)
+        channels.append((cat, display, url, quality))
+    return channels
+
+huya_channels = load_and_classify(HUYA_FILE, "Huya")
+douyu_channels = load_and_classify(DOUYU_FILE, "Douyu")
+
+# ===== 按分类组名排序输出 =====
+# 自定义分类显示顺序
+CAT_ORDER = [
+    "央视", "电影", "经典电影", "电视剧", "动漫", "综艺", "音乐", "体育",
+    "喜剧", "恐怖", "动作", "古装/武侠", "悬疑", "科幻",
+    "战争/军事", "纪录片", "解说", "爱情/情感", "游戏", "综合影视"
+]
+
+def cat_sort_key(cat):
+    try:
+        return CAT_ORDER.index(cat)
+    except ValueError:
+        return 999
+
 lines = []
 now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 lines.append('#EXTM3U')
@@ -41,56 +286,31 @@ lines.append(f'# 生成时间: {now_str}')
 lines.append('# 来源: 央视网 tv.cctv.com/live | 虎牙一起看分类 | 斗鱼一起看分类')
 lines.append('# 清晰度: 央视720p / 虎牙1080P蓝光 / 斗鱼1080P原画')
 lines.append('# 自动更新: GitHub Actions 每30分钟')
+lines.append('# 分类: 按影视内容类型自动归类')
 lines.append('')
 
-# ===== 一、央视总台 =====
-lines.append('# ===== 央视总台官方频道（720p） =====')
-lines.append('')
-for name, tvg_id, url in CCTV_CHANNELS:
-    lines.append(f'#EXTINF:-1 tvg-id="{tvg_id}" tvg-name="{name}" group-title="央视",{name}')
-    lines.append(url)
+# 构建分类→频道映射
+cat_map = {}
 
-# ===== 二、虎牙1080P =====
-lines.append('')
-lines.append('# ===== 虎牙直播 - 1080P影视轮播 =====')
-lines.append('')
-huya_data = []
-if os.path.exists(HUYA_FILE):
-    with open(HUYA_FILE, 'r', encoding='utf-8') as f:
-        huya_data = json.load(f)
-for ch in huya_data:
-    title = ch.get('title', 'Unknown')
-    url = ch.get('url', '')
-    quality = ch.get('quality', '')
-    if not url:
+# 央视
+cat_map["央视"] = [(name, url) for name, _, url in CCTV_CHANNELS]
+
+# 虎牙+斗鱼
+all_stream = huya_channels + douyu_channels
+for cat, display, url, quality in all_stream:
+    cat_map.setdefault(cat, []).append((display, url))
+
+# 按顺序输出
+for cat in sorted(cat_map.keys(), key=cat_sort_key):
+    channels = cat_map[cat]
+    if not channels:
         continue
-    safe_title = title.replace('\\n', ' ').replace('\\r', '').strip()[:40]
-    if not safe_title or safe_title == 'Unknown':
-        safe_title = ch.get('nick', 'Huya')[:30]
-    display = f"{safe_title} [{quality}]" if quality else safe_title
-    lines.append(f'#EXTINF:-1 group-title="虎牙影视(1080P)" tvg-name="{display}",{display}')
-    lines.append(url)
-
-# ===== 三、斗鱼1080P =====
-lines.append('')
-lines.append('# ===== 斗鱼直播 - 1080P影视轮播 =====')
-lines.append('')
-douyu_data = []
-if os.path.exists(DOUYU_FILE):
-    with open(DOUYU_FILE, 'r', encoding='utf-8') as f:
-        douyu_data = json.load(f)
-for ch in douyu_data:
-    title = ch.get('title', 'Unknown')
-    url = ch.get('url', '')
-    quality = ch.get('quality', '')
-    if not url:
-        continue
-    safe_title = title.replace('\\n', ' ').replace('\\r', '').strip()[:40]
-    if not safe_title or safe_title == 'Unknown':
-        safe_title = ch.get('nick', 'Douyu')[:30]
-    display = f"{safe_title} [{quality}]" if quality else safe_title
-    lines.append(f'#EXTINF:-1 group-title="斗鱼影视(1080P)" tvg-name="{display}",{display}')
-    lines.append(url)
+    lines.append('')
+    lines.append(f'# ===== {cat} =====')
+    lines.append('')
+    for display, url in channels:
+        lines.append(f'#EXTINF:-1 group-title="{cat}" tvg-name="{display}",{display}')
+        lines.append(url)
 
 content = '\n'.join(lines)
 
@@ -104,12 +324,16 @@ if os.path.exists(FINAL_FILE):
 shutil.copy2(OUTPUT_FILE, FINAL_FILE)
 
 cctv_count = len(CCTV_CHANNELS)
-huya_count = len(huya_data)
-douyu_count = len(douyu_data)
-total = cctv_count + huya_count + douyu_count
+huya_count = len(huya_channels)
+douyu_count = len(douyu_channels)
+
 print(f"M3U: Generated {OUTPUT_FILE}")
 print(f"  CCTV: {cctv_count} channels")
 print(f"  Huya: {huya_count} channels (1080P)")
 print(f"  Douyu: {douyu_count} channels (1080P)")
-print(f"  Total: {total} channels")
+print(f"  Total: {cctv_count + huya_count + douyu_count} channels")
+print(f"  Categories:")
+for cat in sorted(cat_map.keys(), key=cat_sort_key):
+    chs = cat_map[cat]
+    print(f"    {cat}: {len(chs)}")
 print(f"  Saved to: {FINAL_FILE}")
