@@ -57,7 +57,7 @@ with ThreadPoolExecutor(max_workers=10) as ex:
         r = f.result()
         if r:
             results.append(r)
-            print(f'  OK {r['room_id']} - {r['title'][:30]}', flush=True)
+            print(f'  OK {r["room_id"]} - {r["title"][:30]}', flush=True)
 
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     json.dump(results, f, ensure_ascii=False, indent=2)
