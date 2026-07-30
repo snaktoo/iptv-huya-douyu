@@ -1,0 +1,447 @@
+#EXTM3U
+# 虎牙+斗鱼 影视轮播直播源
+# 生成时间: 2026-07-30 12:40:05
+# 来源: 虎牙一起看分类 & 斗鱼一起看分类
+# 自动更新脚本: https://github.com/your-repo/iptv-huya-douyu
+#
+
+# ===== 虎牙直播 - 影视轮播 =====
+# 格式: HLS (m3u8)
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199655812101-1199655812101-5840882865151148032-2399311747658-10057-A-0-1.m3u8?ratio=2000&wsSecret=531d5b0628a56786581e45f7e9b29cb0&wsTime=6a6c9310&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="【海绵宝宝】黄方块的爆笑生活~",【海绵宝宝】黄方块的爆笑生活~
+https://hs.hls.huya.com/src/1423782096-1423782096-6115097538950332416-2847687648-10057-A-0-1.m3u8?ratio=2000&wsSecret=17b92588f8cabd9aee20c5434d2948dd&wsTime=6a6c9310&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&txyp=o%3Aqzeic1%3B&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="【周星星】星爷经典不间断",【周星星】星爷经典不间断
+https://tx.hls.huya.com/src/1394575534-1394575534-5989656310331736064-2789274524-10057-A-0-1.m3u8?ratio=2000&wsSecret=b22a34f86ccd186aebafb0f653efc3fd&wsTime=6a6c92ef&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&txyp=o%3An4%3B&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199666072082-1199666072082-5884949148003729408-2399332267620-10057-A-0-1.m3u8?ratio=2000&wsSecret=1b871c1e03e46eb61d3fccfc72ca9262&wsTime=6a6c9310&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="古装悬疑科幻  四大天王",古装悬疑科幻  四大天王
+https://hs.hls.huya.com/huyalive/1199665740236-1199665740236-0-2399331603928-10057-A-1782727310-1.m3u8?ratio=2000&wsSecret=a331d464a3b7b95c0b3b1661a6e6940b&wsTime=6a6c9310&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1259520818833-1259520818833-4704711921977262080-2519041761122-10057-A-0-1.m3u8?ratio=2000&wsSecret=16ddee18017964efd59aa8a09aa1b508&wsTime=6a6c930d&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199652450442-1199652450442-5826444649685843968-2399305024340-10057-A-0-1.m3u8?ratio=2000&wsSecret=bc005a40f7dc25de2928bc05c068507e&wsTime=6a6c9310&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="三叉戟",三叉戟
+https://aldirect.hls.huya.com/huyalive/1199665660209-1199665660209-0-2399331443874-10057-A-1782976778-1.m3u8?ratio=2000&wsSecret=6d5e58c487a49b409d3529cbe8ec88bf&wsTime=6a6c9311&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="英叔护体  林正英搞笑僵尸系列",英叔护体  林正英搞笑僵尸系列
+https://tx.hls.huya.com/src/1394575543-1394575543-5989656348986441728-2789274542-10057-A-0-1.m3u8?ratio=2000&wsSecret=71b4ee6fb1f1c40748efba7349dab838&wsTime=6a6c9311&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&txyp=o%3Atzeic1lt%3B&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="无聊  看看喜剧",无聊  看看喜剧
+https://hs.hls.huya.com/huyalive/1199662962429-1199662962429-0-2399326048314-10057-A-1773986585-1.m3u8?ratio=2000&wsSecret=e5de1b3f3c00b465339f79db75628027&wsTime=6a6c9311&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199652665771-1199652665771-5827369480698724352-2399305454998-10057-A-0-1.m3u8?ratio=2000&wsSecret=d49ac505231168ae85c8804bc7671fbf&wsTime=6a6c9311&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199641321485-1199641321485-5778646143332253696-2399282766426-10057-A-0-1.m3u8?ratio=2000&wsSecret=730e3b0684164cf0260519ce58465056&wsTime=6a6c9311&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199664955455-1199664955455-5880153271556898816-2399330034366-10057-A-0-1.m3u8?ratio=2000&wsSecret=f77ca89947cfb679308e38c2b0d0baed&wsTime=6a6c9311&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199611407574-1199611407574-5650166873891799040-2399222938604-10057-A-0-1.m3u8?ratio=2000&wsSecret=86b77c10c1826b38a1def6136c50f3e1&wsTime=6a6c9311&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199652718119-1199652718119-5827594313646735360-2399305559694-10057-A-0-1.m3u8?ratio=2000&wsSecret=d5525ebe7bfb8366d1b80500603a160f&wsTime=6a6c9312&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="成龙 经典系列  走进回忆",成龙 经典系列  走进回忆
+https://hs.hls.huya.com/huyalive/1199662956868-1199662956868-7633998905530192824-2399326037192-10057-A-1777429058-1.m3u8?ratio=2000&wsSecret=a0071ea11168150fc81291c8844ac716&wsTime=6a6c9312&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199662279817-1199662279817-5868661493850963968-2399324683090-10057-A-0-1.m3u8?ratio=2000&wsSecret=f3a97a55f3b803cbfd65519646752894&wsTime=6a6c9312&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199653234988-1199653234988-5829814249098051584-2399306593432-10057-A-0-1.m3u8?ratio=2000&wsSecret=0ed559d7cbabafcc348b05b37e7b8026&wsTime=6a6c9312&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199645243725-1199645243725-5795492035859316736-2399290610906-10057-A-0-1.m3u8?ratio=2000&wsSecret=d2fb84cf2c0646b87312a899016cbf92&wsTime=6a6c9313&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="啊啊啊啊我好害怕",啊啊啊啊我好害怕
+https://aldirect.hls.huya.com/huyalive/1199666030555-1199666030555-0-2399332184566-10057-A-1784718056-1.m3u8?ratio=2000&wsSecret=2f846472048043175d9807d43beceaf8&wsTime=6a6c9313&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="港产小众佳作",港产小众佳作
+https://aldirect.hls.huya.com/huyalive/1199666020193-1199666020193-0-2399332163842-10057-A-1783711897-1.m3u8?ratio=2000&wsSecret=2bb87d600a9f7daa9fa79941a8b1a56b&wsTime=6a6c9317&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="是真男人就来挑战极限！",是真男人就来挑战极限！
+https://hs.hls.huya.com/huyalive/1239543150710-1239543150710-11135001051898314752-2479086424876-10057-A-0-1.m3u8?ratio=2000&wsSecret=00459a6aab6c2c0ef441db004ad70b60&wsTime=6a6c9317&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199658574588-1199658574588-5852747656471773184-2399317272632-10057-A-0-1.m3u8?ratio=2000&wsSecret=c12bedb701e3e9b3f3017c7d9b1eae6f&wsTime=6a6c9317&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="他不死  我睡不着",他不死  我睡不着
+https://hs.hls.huya.com/huyalive/1199665745091-1199665745091-0-2399331613638-10057-A-1783844879-1.m3u8?ratio=2000&wsSecret=7e5fc245dad8cbb693cb22bd161fda79&wsTime=6a6c9317&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199585060992-1199585060992-5537009165840416768-2399170245440-10057-A-0-1.m3u8?ratio=2000&wsSecret=4509c96c41fcecfc85e145edef9dcfcc&wsTime=6a6c9317&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://tx.hls.huya.com/src/1199555487484-1199555487484-5409991916152422400-2399111098424-10057-A-0-1.m3u8?ratio=2000&wsSecret=82a8cc0c22fc6016a03b12a62208ddd3&wsTime=6a6c9318&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="狄仁杰：元芳 你怎么看？",狄仁杰：元芳 你怎么看？
+https://tx.hls.huya.com/src/1423787855-1423787855-6115122273666990080-2847699166-10057-A-0-1.m3u8?ratio=2000&wsSecret=4d829582bd862f940e56f622f5fef503&wsTime=6a6c9318&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199651719537-1199651719537-5823305436614361088-2399303562530-10057-A-0-1.m3u8?ratio=2000&wsSecret=fd225cd3038dd250f94cd0932a4f76d5&wsTime=6a6c9318&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://tx.hls.huya.com/src/1199589096615-1199589096615-5554342034644402176-2399178316686-10057-A-0-1.m3u8?ratio=2000&wsSecret=7e28abbdca13a6549daf9a6c0d4704fb&wsTime=6a6c9318&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="洪金宝元彪成龙合作电影",洪金宝元彪成龙合作电影
+https://aldirect.hls.huya.com/huyalive/1199665504079-1199665504079-0-2399331131614-10057-A-1782380892-1.m3u8?ratio=2000&wsSecret=21c157abfda7fe45bfaec0d0b1adcbb9&wsTime=6a6c9318&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199666043014-1199666043014-5884824301894369280-2399332209484-10057-A-0-1.m3u8?ratio=2000&wsSecret=7bd05c7fb7ea3d901dc0d00c316a9d94&wsTime=6a6c9318&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199655571207-1199655571207-5839848233299345408-2399311265870-10057-A-0-1.m3u8?ratio=2000&wsSecret=80662ee42d88afa4e812370938cb947f&wsTime=6a6c9319&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199662362587-1199662362587-5869016988294053888-2399324848630-10057-A-0-1.m3u8?ratio=2000&wsSecret=cfb4a2f2622abca23ce4eb869224e206&wsTime=6a6c9319&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199645352799-1199645352799-5795960505122160640-2399290829054-10057-A-0-1.m3u8?ratio=2000&wsSecret=503545c62e853bd4e40d131d12b0bf5a&wsTime=6a6c9319&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="铁齿铜ya纪晓岚 经典铁三角组合",铁齿铜ya纪晓岚 经典铁三角组合
+https://tx.hls.huya.com/src/1394565204-1394565204-5989611943319568384-2789253864-10057-A-0-1.m3u8?ratio=2000&wsSecret=c65d153a08559dc0fed769e2585ad2c1&wsTime=6a6c9319&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&txyp=o%3Ad2%3B&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199656423495-1199656423495-5843508782386118656-2399312970446-10057-A-0-1.m3u8?ratio=2000&wsSecret=5601d4a248d04e2ed3c7f6b3c19daa8f&wsTime=6a6c931a&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199648495384-1199648495384-5809457804922060800-2399297114224-10057-A-0-1.m3u8?ratio=2000&wsSecret=05e0a9f9d3fb204e4576917590e6a761&wsTime=6a6c931a&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199662723076-1199662723076-5870565276759621632-2399325569608-10057-A-0-1.m3u8?ratio=2000&wsSecret=c43ad0aadc37b9abb3120622aec5b2f9&wsTime=6a6c931b&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199641626934-1199641626934-5779958036797849600-2399283377324-10057-A-0-1.m3u8?ratio=2000&wsSecret=1c5675db7d6308f4bb3351e5ea4240b2&wsTime=6a6c931b&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199656191407-1199656191407-5842511972016324608-2399312506270-10057-A-0-1.m3u8?ratio=2000&wsSecret=eaa24272d2c269d8d912f171b8d7f572&wsTime=6a6c931c&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="滚滚长江东逝水",滚滚长江东逝水
+https://tx.hls.huya.com/src/1423787831-1423787831-6115122170587774976-2847699118-10057-A-0-1.m3u8?ratio=2000&wsSecret=9acdaa48adb45dcc127c77bdb42bcc46&wsTime=6a6c931c&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&txyp=o%3Acp1%3B&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199655460890-1199655460890-5839374425392152576-2399311045236-10057-A-0-1.m3u8?ratio=2000&wsSecret=9026ef1964d8ccab6dc918d108157a88&wsTime=6a6c931d&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199661104160-1199661104160-5863612085484650496-2399322331776-10057-A-0-1.m3u8?ratio=2000&wsSecret=c308ba21e022cfb35a5c67d2fa551f6f&wsTime=6a6c931d&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/src/1199584094118-1199584094118-5532856473631064064-2399168311692-10057-A-0-1.m3u8?ratio=2000&wsSecret=c0ad3e47d6f9cce92cf995909a713674&wsTime=6a6c931d&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="港片天花板   刘德华梁朝伟",港片天花板   刘德华梁朝伟
+https://hs.hls.huya.com/huyalive/1199661097687-1199661097687-7598752501230907435-2399322318830-10057-A-1769222495-1.m3u8?ratio=2000&wsSecret=24cae4846e9bcc7d6a9ae213877a9bd9&wsTime=6a6c931e&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199651789701-1199651789701-5823606788699717632-2399303702858-10057-A-0-1.m3u8?ratio=2000&wsSecret=4475d2c32b4e37d560301802d9f61f76&wsTime=6a6c931e&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1259519701392-1259519701392-4699912549427052544-2519039526240-10057-A-0-1.m3u8?ratio=2000&wsSecret=eb8b9521d662abffc347849d2585e2bc&wsTime=6a6c931e&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="SKYNOMAD 小米澎程 小米汽车技术发布会",SKYNOMAD 小米澎程 小米汽车技术发布会
+https://hs.hls.huya.com/src/1461663567-1461663567-6277797218019704832-2923450590-10057-A-0-1.m3u8?ratio=2000&wsSecret=0836d8bae1380493668f7ccb01a8c88c&wsTime=6a6c931f&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199641637434-1199641637434-5780003133954457600-2399283398324-10057-A-0-1.m3u8?ratio=2000&wsSecret=0af5f345ebda3e32c4766a9699576637&wsTime=6a6c931f&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="跳最浪的舞   挨最狠的打",跳最浪的舞   挨最狠的打
+https://hs.hls.huya.com/huyalive/1199665287244-1199665287244-0-2399330697944-10057-A-1781711385-1.m3u8?ratio=2000&wsSecret=6c9929337a6dc2ce31c9808803928638&wsTime=6a6c931f&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199659098029-1199659098029-5854995818448158720-2399318319514-10057-A-0-1.m3u8?ratio=2000&wsSecret=2395778b088a1ad963f3b635a32bfcab&wsTime=6a6c931f&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="真实事件改编剧!",真实事件改编剧!
+https://hs.hls.huya.com/huyalive/2388050197-2388050197-0-4776223850-10057-A-1764601618-1.m3u8?ratio=2000&wsSecret=ec283ecd20640196dafd08d3030130f2&wsTime=6a6c9320&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199664809196-1199664809196-5879525093935153152-2399329741848-10057-A-0-1.m3u8?ratio=2000&wsSecret=63c769f9ad8436077f4a33167f85b32f&wsTime=6a6c9320&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="97前的纯港片",97前的纯港片
+https://hs.hls.huya.com/huyalive/1199665426435-1199665426435-0-2399330976326-10057-A-1782450816-1.m3u8?ratio=2000&wsSecret=fbacdbc0d7e0890343008dc306583307&wsTime=6a6c9320&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199652310692-1199652310692-5825844428006227968-2399304744840-10057-A-0-1.m3u8?ratio=2000&wsSecret=4b49d4eb22cea28a5bb222ab0964382d&wsTime=6a6c9320&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="古灵精探TVB",古灵精探TVB
+https://hs.hls.huya.com/huyalive/1199660763772-1199660763772-0-2399321651000-10057-A-1768534407-1.m3u8?ratio=2000&wsSecret=71b720d13153e32eca03c0f4f5539b3f&wsTime=6a6c9321&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1279549007048-1279549007048-16938149008696672256-2559098137552-10057-A-0-1.m3u8?ratio=2000&wsSecret=649c6eb89e823663d83cd0f263379e01&wsTime=6a6c9321&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="古灵精探",古灵精探
+https://hs.hls.huya.com/huyalive/1199661435180-1199661435180-0-2399322993816-10057-A-1770028230-1.m3u8?ratio=2000&wsSecret=3293ed50957dfb543983ecca68f7b4bd&wsTime=6a6c9320&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="庆yu年2 与范闲再探庙堂江湖",庆yu年2 与范闲再探庙堂江湖
+https://hs.hls.huya.com/src/1199561177177-1199561177177-5434428961511702528-2399122477810-10057-A-0-1.m3u8?ratio=2000&wsSecret=e222228353f5543fa4be369c67a2d5c5&wsTime=6a6c9322&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199663383395-1199663383395-5873401325269549056-2399326890246-10057-A-0-1.m3u8?ratio=2000&wsSecret=f8692eb1ae97db4beb5853dd1972ffa3&wsTime=6a6c9322&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="yang光的快乐生活，轻松一夏的必看喜剧！",yang光的快乐生活，轻松一夏的必看喜剧！
+https://hs.hls.huya.com/huyalive/1250011-1250011-5368756364640256-3049003162-10057-A-0-1.m3u8?ratio=2000&wsSecret=3c566e2a7a18f517ac88ff983ded60fc&wsTime=6a6c9322&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&txyp=o%3Ad3%3B&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199641979855-1199641979855-5781473820950921216-2399284083166-10057-A-0-1.m3u8?ratio=2000&wsSecret=85e9e5b3c46cf323083bff74fe77c351&wsTime=6a6c9320&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199549894244-1199549894244-5385969133273743360-2399099911944-10057-A-0-1.m3u8?ratio=2000&wsSecret=ef5da1ac349a7d8c9cc28e6150a1e16a&wsTime=6a6c9323&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="【女神系列】邱淑贞 王祖贤 张曼玉",【女神系列】邱淑贞 王祖贤 张曼玉
+https://hs.hls.huya.com/huyalive/1388451591-1388451591-5963354175424167936-2777026638-10057-A-0-1.m3u8?ratio=2000&wsSecret=628ad5c63202274bcf5cf3b28a5de7e3&wsTime=6a6c9324&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&txyp=o%3Awx91%3B&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199528233745-1199528233745-5292937998453702656-2399056590946-10057-A-0-1.m3u8?ratio=2000&wsSecret=0f02b05b3ca71e869d1a2b2ad1131789&wsTime=6a6c9323&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199607078181-1199607078181-5631572272545267712-2399214279818-10057-A-0-1.m3u8?ratio=2000&wsSecret=ab32ef6cb6c7c1bd81e6147dc4e8a76c&wsTime=6a6c9324&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="威尔逊VS奥沙利文 2026斯诺克上海大师赛",威尔逊VS奥沙利文 2026斯诺克上海大师赛
+https://tx.hls.huya.com/src/1099531627777-1099531627777-85899350214967296-2199063379010-10057-A-0-1-imgplus.m3u8?ratio=2000&wsSecret=637827369b2afaa1753fafd18b93f9f4&wsTime=6a6c930a&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="爆笑综艺[五哈]1-4季来了~",爆笑综艺[五哈]1-4季来了~
+https://hs.hls.huya.com/huyalive/1239543153980-1239543153980-11135015096441372672-2479086431416-10057-A-0-1.m3u8?ratio=2000&wsSecret=c68cb4af525219b11b1cc5395cbc7dec&wsTime=6a6c9324&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="我jio得Bosco这部剧就该拿视帝",我jio得Bosco这部剧就该拿视帝
+https://txdirect.hls.huya.com/huyalive/1239543151740-1239543151740-11135005475714629632-2479086426936-10057-A-0-1.m3u8?ratio=2000&wsSecret=7b9b663660f293abc3a35aa0d6fc9456&wsTime=6a6c9324&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199662366364-1199662366364-5869033210385530880-2399324856184-10057-A-0-1.m3u8?ratio=2000&wsSecret=9eac3e47af8fbd38b58bd90b8444232b&wsTime=6a6c9325&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199664086745-1199664086745-5876422190517190656-2399328296946-10057-A-0-1.m3u8?ratio=2000&wsSecret=60092ff8d03a7a3b1bd4b568cece08db&wsTime=6a6c9325&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199651029556-1199651029556-5820341990784499712-2399302182568-10057-A-0-1.m3u8?ratio=2000&wsSecret=2a38e1f5113dc1ba40e160c5843d2827&wsTime=6a6c9325&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="奔跑不停歇 笑哈哈下饭神器",奔跑不停歇 笑哈哈下饭神器
+https://hs.hls.huya.com/huyalive/1239543150224-1239543150224-11134998964544208896-2479086423904-10057-A-0-1.m3u8?ratio=2000&wsSecret=f85a3df4da58f03dc300b87adcc666fe&wsTime=6a6c9325&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199652279860-1199652279860-5825712005574557696-2399304683176-10057-A-0-1.m3u8?ratio=2000&wsSecret=0a6a603a43271508f03d14f8b5969a36&wsTime=6a6c9325&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199659485356-1199659485356-5856659375246016512-2399319094168-10057-A-0-1.m3u8?ratio=2000&wsSecret=96591ae59c3e3e96eedded8ef902f125&wsTime=6a6c9326&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199653570362-1199653570362-5831254669459980288-2399307264180-10057-A-0-1.m3u8?ratio=2000&wsSecret=5f43bac797a437abe8b006e700ec45f4&wsTime=6a6c9326&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="跑男1-4季，gogogo出发咯~",跑男1-4季，gogogo出发咯~
+https://hs.hls.huya.com/huyalive/1239543150230-1239543150230-11134998990314012672-2479086423916-10057-A-0-1.m3u8?ratio=2000&wsSecret=56d486c86a7c76c1ebb725dfe2e68c16&wsTime=6a6c9325&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199661675386-1199661675386-5866065482473275392-2399323474228-10057-A-0-1.m3u8?ratio=2000&wsSecret=5704e9478f3cdb8ada06be98bb9692a3&wsTime=6a6c9326&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="旧社会西装黑社会",旧社会西装黑社会
+https://hs.hls.huya.com/huyalive/1199658752038-1199658752038-0-2399317627532-10057-A-1764345229-1.m3u8?ratio=2000&wsSecret=8b16dbcf560505075a7e42a793edaa27&wsTime=6a6c9326&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199514333883-1199514333883-5233238545744789504-2399028791222-10057-A-0-1.m3u8?ratio=2000&wsSecret=20a0bfed3c2d62535ccfa6be75d038af&wsTime=6a6c9327&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199593632975-1199593632975-5573825552487284736-2399187389406-10057-A-0-1.m3u8?ratio=2000&wsSecret=8c3ed2eea201013b1752d07d1ffa9be3&wsTime=6a6c9327&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="与古代神探共赴推理盛宴",与古代神探共赴推理盛宴
+https://hs.hls.huya.com/src/1394575548-1394575548-5989656370461278208-2789274552-10057-A-0-1.m3u8?ratio=2000&wsSecret=2bb12df54d889cc01c78efe6396ea21c&wsTime=6a6c9327&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199658308974-1199658308974-5851606853028413440-2399316741404-10057-A-0-1.m3u8?ratio=2000&wsSecret=aa4c5affbcfbd34821b4a74873b0bc72&wsTime=6a6c9327&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="新水浒传·在下正是西公子！",新水浒传·在下正是西公子！
+https://hs.hls.huya.com/src/1394565188-1394565188-5989611874600091648-2789253832-10057-A-0-1.m3u8?ratio=2000&wsSecret=48ccdfd56cfcbfb70920ba6068ad83ef&wsTime=6a6c9313&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199641970590-1199641970590-5781434028078923776-2399284064636-10057-A-0-1.m3u8?ratio=2000&wsSecret=244e57caf9aa44b7241107701b1d97f4&wsTime=6a6c9328&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199665089914-1199665089914-5880730768564551680-2399330303284-10057-A-0-1.m3u8?ratio=2000&wsSecret=2f737a7e42f235fc0436474b4ad9a2db&wsTime=6a6c9328&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199593915491-1199593915491-5575038949467881472-2399187954438-10057-A-0-1.m3u8?ratio=2000&wsSecret=9765973e4b5d4fd0dec1dc697782d634&wsTime=6a6c9328&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199661105759-1199661105759-5863618953137356800-2399322334974-10057-A-0-1.m3u8?ratio=2000&wsSecret=f4d6cc149570d3a4487de93a0f86aa91&wsTime=6a6c9329&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199518982056-1199518982056-5253202296765939712-2399038087568-10057-A-0-1.m3u8?ratio=2000&wsSecret=aee4b274da9a70621c52c0e28dc34e57&wsTime=6a6c9329&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199653555577-1199653555577-5831191168368508928-2399307234610-10057-A-0-1.m3u8?ratio=2000&wsSecret=8b105d17f0a9c4ffa7bfe581c3e66822&wsTime=6a6c9329&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="[情满四合院] 你准备好感受那份年代情感了吗？",[情满四合院] 你准备好感受那份年代情感了吗？
+https://hs.hls.huya.com/src/1394575549-1394575549-5989656374756245504-2789274554-10057-A-0-1.m3u8?ratio=2000&wsSecret=1755fa2dfdeeb6e47be94c6cc2cd6ee5&wsTime=6a6c9329&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&txyp=o%3Awx91%3B&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="大家好 我曾小咸又回来啦",大家好 我曾小咸又回来啦
+https://hs.hls.huya.com/src/1388474069-1388474069-5963450717699047424-2777071594-10057-A-0-1.m3u8?ratio=2000&wsSecret=98232533e225acfa5321c4ef3ee83b39&wsTime=6a6c9327&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&txyp=o%3Acp1%3B&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199639433863-1199639433863-5770538868575043584-2399278991182-10057-A-0-1.m3u8?ratio=2000&wsSecret=7fda40f3e6dfeef31ad9c54d0a1ae1e3&wsTime=6a6c932a&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="大女主魏璎珞杀疯了",大女主魏璎珞杀疯了
+https://hs.hls.huya.com/huyalive/1099531840940-1099531840940-86814878328684544-2199063805336-10057-A-0-1.m3u8?ratio=2000&wsSecret=1aeb986bf94af3c6c3cbbbd355bb9a7f&wsTime=6a6c932a&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199650974351-1199650974351-5820104887114924032-2399302072158-10057-A-0-1.m3u8?ratio=2000&wsSecret=2fc4b5f7da15ead3f49b9889e772d646&wsTime=6a6c932b&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199641339050-1199641339050-5778721584432807936-2399282801556-10057-A-0-1.m3u8?ratio=2000&wsSecret=01ea4364b31360eb9c74e31993c6d66a&wsTime=6a6c932b&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="最喜欢的一版韦小宝",最喜欢的一版韦小宝
+https://hs.hls.huya.com/huyalive/1199560556212-1199560556212-5431761937144741888-2399121235880-10057-A-0-1.m3u8?ratio=2000&wsSecret=42cc5f365a7e1dfe42f036522efee619&wsTime=6a6c932b&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199615682478-1199615682478-5668527446765338624-2399231488412-10057-A-0-1.m3u8?ratio=2000&wsSecret=b19f9dbd4c5aa0e4e338c2586c4cf580&wsTime=6a6c932b&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199654488125-1199654488125-5835196431530459136-2399309099706-10057-A-0-1.m3u8?ratio=2000&wsSecret=c77490c2595d9754f9bd9103e7c74efc&wsTime=6a6c932c&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1347846777-1347846777-5788957827234004992-2695817010-10057-A-0-1.m3u8?ratio=2000&wsSecret=289b1131a752a24049d03c0208ba42de&wsTime=6a6c932c&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="江湖风云再起，小小镖局暗藏乾坤！",江湖风云再起，小小镖局暗藏乾坤！
+https://hs.hls.huya.com/src/1449698121-1449698121-6226406018767650816-2847687516-10057-A-0-1.m3u8?ratio=2000&wsSecret=1a3ec339fa39c0f163492bbaf17a8822&wsTime=6a6c9327&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&txyp=o%3Acp1%3B&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199652466064-1199652466064-5826511745664942080-2399305055584-10057-A-0-1.m3u8?ratio=2000&wsSecret=a4448bc8bb7bdd6af4e2ee7ab4ee3f77&wsTime=6a6c932d&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="超燃国漫-一人之下",超燃国漫-一人之下
+https://aldirect.hls.huya.com/huyalive/1199665289227-1199665289227-0-2399330701910-10057-A-1782071586-1.m3u8?ratio=2000&wsSecret=9b0d837ac40ec28b453ec054e77b3f9a&wsTime=6a6c932e&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="法海你不懂爱",法海你不懂爱
+https://txdirect.hls.huya.com/huyalive/1099531840849-1099531840849-86814487486660608-2199063805154-10057-A-0-1.m3u8?ratio=2000&wsSecret=6908082058669efbc404cf8342d44257&wsTime=6a6c932e&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199650781242-1199650781242-5819275490275360768-2399301685940-10057-A-0-1.m3u8?ratio=2000&wsSecret=dfa6a85bd00c26c52d13840033990b79&wsTime=6a6c932f&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199651047575-1199651047575-5820419381800206336-2399302218606-10057-A-0-1.m3u8?ratio=2000&wsSecret=77fcdc62e9e0b7b5f0c377efa117f586&wsTime=6a6c932d&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1199660639035-1199660639035-5861614388821098496-2399321401526-10057-A-0-1.m3u8?ratio=2000&wsSecret=871fc734b3c36caf767bd09bc8e91a66&wsTime=6a6c932f&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://txdirect.hls.huya.com/huyalive/1199641302504-1199641302504-5778564620558008320-2399282728464-10057-A-0-1.m3u8?ratio=2000&wsSecret=d99c924151f8af8a807ecc8a6f4761a6&wsTime=6a6c932e&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199649124784-1199649124784-5812161057338163200-2399298373024-10057-A-0-1.m3u8?ratio=2000&wsSecret=5acc205da07331242a974b97d92f8414&wsTime=6a6c9330&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="金马影帝佳作",金马影帝佳作
+https://hs.hls.huya.com/huyalive/1199542845267-1199542845267-0-2399085813990-10057-A-1764558151-1.m3u8?ratio=2000&wsSecret=6b75dfcf569da2765a84b7c26f738e7a&wsTime=6a6c9330&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="来找座山雕靠窑了",来找座山雕靠窑了
+https://hs.hls.huya.com/huyalive/1199612052282-1199612052282-0-2399224228020-10057-A-1783844275-1.m3u8?ratio=2000&wsSecret=3791144698232375f83233b8a067bb9b&wsTime=6a6c932f&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199649403800-1199649403800-5813359421933223936-2399298931056-10057-A-0-1.m3u8?ratio=2000&wsSecret=7c5747f0f1e715d4d0bb9aa0c87d300d&wsTime=6a6c9330&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/1149307730-1149307730-4936239113389998080-2298738916-10057-A-0-1.m3u8?ratio=2000&wsSecret=4ca9ed8898e01e35a410e1c684144449&wsTime=6a6c9330&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="三叉戟",三叉戟
+https://hs.hls.huya.com/huyalive/1446869405-1446869405-0-2893862266-10057-A-1764528580-1.m3u8?ratio=2000&wsSecret=8abe521c95d12faa23e09b5f60543a13&wsTime=6a6c9336&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://aldirect.hls.huya.com/huyalive/1199665925808-1199665925808-0-2399331975072-10057-A-1782381945-1.m3u8?ratio=2000&wsSecret=962c8229f989b5541a79436b5f7dfdcd&wsTime=6a6c9333&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+#EXTINF:-1 group-title="虎牙影视" tvg-name="澳门那种电影",澳门那种电影
+https://hs.hls.huya.com/huyalive/525857291-525857291-2258539867208155136-1051838038-10057-A-0-1.m3u8?ratio=2000&wsSecret=da02b2a240e65794bb934faa1369a72e&wsTime=6a6c9338&fm=RFdxOEJjSjNoNkRKdDZUWV8kMF8kMV8kMl8kMw%3D%3D&ctype=tars_mobile&fs=bgct&t=103
+
+# ===== 斗鱼直播 - 影视轮播 =====
+# 格式: FLV
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="─「 橙記 最人气港剧间 」─ (超清)",─「 橙記 最人气港剧间 」─ (超清)
+https://stream-ningxia-ct-36-103-200-171.edgesrv.com:443/live/4549169rQKtgsDfC_2000.flv?wsAuth=cf3001c2ca76fa5d45042421d2adfce4&token=web-h5-0-4549169-1fd91ff7b96ba3dabc3cb1f1a675136de755af7ad81be30a&logo=0&expire=0&did=626da8ae8356437fb2d81da46a63c1ab&pt=2&st=0&sid=431983707&mcid2=0&origin=dy&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="悍匪技术学院 (720P30)",悍匪技术学院 (720P30)
+https://stream-ningxia-ct-36-103-200-163.edgesrv.com:443/live/8371123r0sauM6dE.flv?wsAuth=95a904bd25ec70065bcd74b01b33d0f4&token=web-h5-0-8371123-efedf24257dd979b19ee34f19e1a97579ca8ff70acc91507&logo=0&expire=0&did=99e5541706e9491d859b929ae65df1cf&pt=2&st=0&sid=434453107&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="斗鱼音乐MV频道 (1080P60)",斗鱼音乐MV频道 (1080P60)
+https://stream-ningxia-ct-36-103-200-163.edgesrv.com:443/live/3870925razyadTb7_550.flv?wsAuth=31bc0c0e9be281995809a732d0011adc&token=web-h5-0-3870925-aefb3acdd9b757790ef0b4529df807e3d7316ae8204b92a6&logo=0&expire=0&did=7cf6b455b8be4a8fa4cf2718e6c4fb04&pt=2&st=0&sid=434322265&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【铁甲人】一起see那些年的经典 (1080P60)",【铁甲人】一起see那些年的经典 (1080P60)
+https://stream-ningxia-ct-36-103-200-163.edgesrv.com:443/live/1274132rs9FdkTSY_550.flv?wsAuth=2ce86f5d037bc2db6341c43a6b6dff7d&token=web-h5-0-1274132-190f0406fb430af753f827b83341aa8e11cb85ed21196a60&logo=0&expire=0&did=5b6dd8ae4ae54cc6b233bd1b7fff4447&pt=2&st=0&sid=434423289&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【女神金】沙发分你一半，一起来追剧！ (1080P30)",【女神金】沙发分你一半，一起来追剧！ (1080P30)
+https://stream-ningxia-ct-36-103-200-173.edgesrv.com:443/live/747764rUJbRqoh4y_550.flv?wsAuth=64e39cb7499f935a3bc06698b5063e0b&token=web-h5-0-747764-72757a48f7b39f8d48e534dcf917a96340d8d9ec9ce1a717&logo=0&expire=0&did=b063a882f0634660bdf952dc0e3633a7&pt=2&st=0&sid=431024795&mcid2=0&origin=dy&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【神 剧】的直播间 (720P30)",【神 剧】的直播间 (720P30)
+https://stream-ningxia-ct-36-103-200-168.edgesrv.com:443/live/3439096rZEzBDXnn_550.flv?wsAuth=e0caad5018a1434028db91f6c8456416&token=web-h5-0-3439096-e5fbcc6cdd9df7f32fd651265eab091d0e69a8c837e25000&logo=0&expire=0&did=9fd23fb01a7740b993f61d41ca9eaa93&pt=2&st=0&sid=434239485&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="童年回忆下饭神剧 (1080P30)",童年回忆下饭神剧 (1080P30)
+https://hw3a.douyucdn2.cn/live/11673725rR2EMLqe.flv?wsAuth=7deeb7ff0fb981e9c989d3f8097550e5&token=web-h5-0-11673725-22d543cf167de1a5cb3754e6bd31ac4763522e58a271751f&logo=0&expire=0&did=b6be9c062cb2492aa491723a3b4cb048&pt=2&st=0&sid=434438456&mcid2=0&origin=hw&fcdn=hw&fo=1&mix=0&isp=
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【斗鱼最强女团】Kpop女团点播直播间 (1080P60)",【斗鱼最强女团】Kpop女团点播直播间 (1080P60)
+https://stream-ningxia-ct-36-103-200-173.edgesrv.com:443/live/329667rHFHEZHSmo.flv?wsAuth=a0ef6fed71ab091e79f9a632ad0edb72&token=web-h5-0-329667-44779d857ea81499dc3ed668789555375581429c52c2113f&logo=0&expire=0&did=aeebdc80d3a44a8fafcb393941db35f3&pt=2&st=0&sid=434396752&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【超清1】经典港剧天地 (720P30)",【超清1】经典港剧天地 (720P30)
+https://stream-ningxia-ct-36-103-200-164.edgesrv.com:443/live/4290711rbINuNmBY_550.flv?wsAuth=fe01820062fad9e9e2b6c3bf67ab6abd&token=web-h5-0-4290711-a1825383364f9074b916cb8f028e15d8a6952991b9c70284&logo=0&expire=0&did=ec413540140e44e2b32139b70366b8d6&pt=2&st=0&sid=433031373&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【经典剧场】经典武侠 动作 老剧你懂的 (超清)",【经典剧场】经典武侠 动作 老剧你懂的 (超清)
+https://stream-ningxia-ct-36-103-200-165.edgesrv.com:443/live/4246519rKEwIIDFu_550.flv?wsAuth=2c7993bf029fb2c00d35e343460e2d5e&token=web-h5-0-4246519-126295b0785b4fb5beb765a76ffab60b2cf21037da330bae&logo=0&expire=0&did=12d7ecdfa6f4419a8ec1dc2776cf1389&pt=2&st=0&sid=433867054&mcid2=0&origin=dy&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【超清3】人气港剧天地 (720P30)",【超清3】人气港剧天地 (720P30)
+https://stream-ningxia-ct-36-103-200-168.edgesrv.com:443/live/5261342rYiM5GRfs_550.flv?wsAuth=67e6c391fd6fdf7bc59b51871e413f55&token=web-h5-0-5261342-d44645a2f3139ab6640d5b1e2b9bddf4dc1f14f8c54e0d63&logo=0&expire=0&did=5810069567bb4b5d99cb0bb394a4832a&pt=2&st=0&sid=433031582&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【超清2】热门港剧天地 (720P30)",【超清2】热门港剧天地 (720P30)
+https://stream-ningxia-ct-36-103-200-167.edgesrv.com:443/live/5522351rVvkqhPyS_550.flv?wsAuth=c807d223271ba1c0be7f666bbb279f95&token=web-h5-0-5522351-a92b46789bbb4306d6559c8ec631edc821a806aa127608c8&logo=0&expire=0&did=00f9669542934acb823d959608e22d7a&pt=2&st=0&sid=434192790&mcid2=0&origin=dy&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="❤️怡宝❤️陪你重刷【精彩热剧】 (原画)",❤️怡宝❤️陪你重刷【精彩热剧】 (原画)
+https://hw3.douyucdn2.cn/live/434971rlX2VUOBIL_550.flv?wsAuth=aed721b71d428ba7e34eda9001c08df6&token=web-h5-0-434971-cf13bf7243421b8d0a4207c09819b111c11609b3185a9e2a&logo=0&expire=0&did=186842f88eca4152a0298d8818940611&pt=2&st=0&sid=433786542&mcid2=0&origin=hw&fcdn=hw&fo=1&mix=0&isp=
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【电视剧】本直播间由天使点播提供技术支持 (720P30)",【电视剧】本直播间由天使点播提供技术支持 (720P30)
+https://stream-ningxia-ct-36-103-200-172.edgesrv.com:443/live/7623292rNooBxybN_550.flv?wsAuth=aaf383d158938048761aa211930d814b&token=web-h5-0-7623292-0897481e7a8788d2aa39231c7db146e919c85df857ea8fd1&logo=0&expire=0&did=a2c9717d5cd04a1ca17a8d3be3814cc2&pt=2&st=0&sid=434446456&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【牛叔】N分钟带你看完大片 (1080P)",【牛叔】N分钟带你看完大片 (1080P)
+https://stream-ningxia-ct-36-103-200-166.edgesrv.com:443/live/2758565rVIROeQiW_550.flv?wsAuth=f267313167873f55566c887de4d3bbc6&token=web-h5-0-2758565-61df854472f8940b240bb6922de7f780e1bfe3171603ce24&logo=0&expire=0&did=e57454a03a07476eb96d0efa8d04d8f2&pt=2&st=3&sid=433298077&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【动漫】超燃 怀旧 经典 (720P)",【动漫】超燃 怀旧 经典 (720P)
+https://stream-ningxia-ct-36-103-200-170.edgesrv.com:443/live/1174353rGRnLQWWz.flv?wsAuth=5446220cc701d51270cf588fd44c6693&token=web-h5-0-1174353-4620877bf9ebd8e84ded5ab5f9cddede3bdc9757e12608d3&logo=0&expire=0&did=b27d5daa0fd147c99133e93d2c3d47a6&pt=2&st=0&sid=431067530&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="经典神剧！！ (720P30)",经典神剧！！ (720P30)
+https://stream-ningxia-ct-36-103-200-171.edgesrv.com:443/live/508118rEZvgW1K6A_550.flv?wsAuth=6f6ac1e2f516e9ef2f74a59bb405b81b&token=web-h5-0-508118-e2b9ba76fe0cf6738a3389502c4e8801eac5c76df1a98d8a&logo=0&expire=0&did=9843753d4c7644ca9b6e6c2b9c178f74&pt=2&st=0&sid=433783547&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="开心锤锤，开心快乐每一天！ (1080P30)",开心锤锤，开心快乐每一天！ (1080P30)
+https://hw3a.douyucdn2.cn/live/9018297rGCLyg0LC_550.flv?wsAuth=7fa9a2954040680e54ebf095fdd1118e&token=web-h5-0-9018297-3ad17f3c6213335c9d5f06fda82520ff610fcfb3fec86ba4&logo=0&expire=0&did=0205bbe8af5b4464b65377cf375877bf&pt=2&st=3&sid=433709147&mcid2=0&origin=hw&fcdn=hw&fo=1&mix=0&isp=
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【米尼影院】经典电视剧 (1080P30)",【米尼影院】经典电视剧 (1080P30)
+https://stream-ningxia-ct-36-103-200-171.edgesrv.com:443/live/7642724rZYZdsCLx.flv?wsAuth=7f5ed4748065488a318fdd71b0640629&token=web-h5-0-7642724-949df34f6ad49a003bafa499dbc3bd3f870433e27574b419&logo=0&expire=0&did=e91b8949dcd743fa969be5df3d8c23e7&pt=2&st=0&sid=434115914&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【更新】最全斗牌、麻将剧集解说 (1080P)",【更新】最全斗牌、麻将剧集解说 (1080P)
+https://stream-ningxia-ct-36-103-200-164.edgesrv.com:443/live/9559158rdWCs2kGA.flv?wsAuth=b38fa41a7e169946b78cf0078fed85a0&token=web-h5-0-9559158-98983f14e9fd56926baf1b760c87b70ed33c5851c043c8fc&logo=0&expire=0&did=5687ce15b18a4a319b7b65e07a3f2264&pt=2&st=3&sid=433641705&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【动作】武侠 经典 古装 (720P30)",【动作】武侠 经典 古装 (720P30)
+https://stream-ningxia-ct-36-103-200-172.edgesrv.com:443/live/2793084rsdDbLnVb_550.flv?wsAuth=94cda5b72778ff64e4a93697a6cca35a&token=web-h5-0-2793084-3f569b7e953394a73cb63e24d6fed921b0bcd809ba3b3a78&logo=0&expire=0&did=c9f75efb6e194119813bbf906c5e5943&pt=2&st=0&sid=431067560&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="燕双鹰の下饭专场：我赌你碗里没菜 (1080P30)",燕双鹰の下饭专场：我赌你碗里没菜 (1080P30)
+https://stream-ningxia-ct-36-103-200-170.edgesrv.com:443/live/11931032rVignmk7_550.flv?wsAuth=e0d3cf94051da39381ad59f48af96bd9&token=web-h5-0-11931032-4ebd3c0d65ffca8639cb321798dea8b913f85070e7f880a5&logo=0&expire=0&did=7f04308395ae4599b39b78439d95fcb1&pt=2&st=0&sid=434419633&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="小小天才的搞笑段子 (1080P30)",小小天才的搞笑段子 (1080P30)
+https://hw3a.douyucdn2.cn/live/9419678rapxrehuC_550.flv?wsAuth=f5a7301f47bcc92e5c678128ce917d6e&token=web-h5-0-9419678-33771932351b048c60a61e2bf2362924f6dc3ed3bb653432&logo=0&expire=0&did=5cc18ef2a65f444eadc07087f9ce4b16&pt=2&st=3&sid=434168994&mcid2=0&origin=hw&fcdn=hw&fo=1&mix=0&isp=
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【全体起立】你的本山大叔超强来袭 (720P)",【全体起立】你的本山大叔超强来袭 (720P)
+https://stream-ningxia-ct-36-103-200-170.edgesrv.com:443/live/9817716r6e16Oq1E_550.flv?wsAuth=ecfe9aafc7dc532cb1e00e2b523deadb&token=web-h5-0-9817716-7767d579ba2df8290f4da67a8fe7067926f0dd0297e0691d&logo=0&expire=0&did=201c0356b1354515a7f831729ddd37c7&pt=2&st=3&sid=434176670&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【阿七点歌台】MV  热歌 经典 流行 (1080P30)",【阿七点歌台】MV  热歌 经典 流行 (1080P30)
+https://stream-ningxia-ct-36-103-200-165.edgesrv.com:443/live/3186217rWwdBuV4c.flv?wsAuth=062f68d37893746a41b2b3f823774391&token=web-h5-0-3186217-9a22c951e7ba20d699041580cf618562c447079ab4fd9b80&logo=0&expire=0&did=5cb0ebeae90c40aaaa1bbc0f31018cf4&pt=2&st=0&sid=434236562&mcid2=0&origin=hw&fcdn=scdn&fo=0&mix=0&isp=scdnctnix
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="贾玲经典小品的直播间 (720P)",贾玲经典小品的直播间 (720P)
+https://hw3a.douyucdn2.cn/live/10419541rxicw3m7_550.flv?wsAuth=3da9d4f93fc847184fb4cb1c396d566f&token=web-h5-0-10419541-f27c9adeafb4120140d0a26f77d3e03de7182dec5aba5eee&logo=0&expire=0&did=f91ac485ac634594bc05970f7c0e32c8&pt=2&st=3&sid=433782553&mcid2=0&origin=hw&fcdn=hw&fo=1&mix=0&isp=
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="【正版】经典小品，下饭必备 (原画360P30)",【正版】经典小品，下饭必备 (原画360P30)
+https://hw3a.douyucdn2.cn/live/9067836refrFZC3T_550.flv?wsAuth=f01ee18a4465bdeacd4a3b6a9c1e6bf1&token=web-h5-0-9067836-ba16fe78805dfb06b85ff8885d2364ab512894a6a4584e44&logo=0&expire=0&did=f6468f44cacd440ea880b4e467bb771b&pt=2&st=3&sid=433597899&mcid2=0&origin=hw&fcdn=hw&fo=1&mix=0&isp=
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="贾队长搞笑抗战情景剧 (720P30)",贾队长搞笑抗战情景剧 (720P30)
+https://hw3a.douyucdn2.cn/live/6997954rNy0BFQOV.flv?wsAuth=3d0b589c77842ccb7833b944abbed5da&token=web-h5-0-6997954-5fc36d41efd592ba2ade2df95eee0d6484d6c365d6de3b68&logo=0&expire=0&did=7f237e106a114b989330c3fe5c8fe69c&pt=2&st=0&sid=434080537&mcid2=0&origin=hw&fcdn=hw&fo=1&mix=0&isp=
+
+#EXTINF:-1 group-title="斗鱼影视" tvg-name="《武侠剧》 (原画480P20)",《武侠剧》 (原画480P20)
+https://hw3a.douyucdn2.cn/live/7655471rTk7RFl4w_550.flv?wsAuth=5adbc971b3513e8394ced29b6e8ceff9&token=web-h5-0-7655471-fa641c02bf2b65726bd6b4e6784af645ab4493165079869c&logo=0&expire=0&did=326feff660b54e2daf1efceba88fecf2&pt=2&st=0&sid=434439231&mcid2=0&origin=hw&fcdn=hw&fo=1&mix=0&isp=

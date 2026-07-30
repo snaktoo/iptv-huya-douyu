@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""抓取虎牙一起看分类下所有直播间的流地址"""
+"""Fetch Huya streams from Yiqikan category"""
 import requests
 import re
 import base64
@@ -12,67 +12,53 @@ OUTPUT_FILE = "/tmp/iptv_update/huya.json"
 os.makedirs("/tmp/iptv_update", exist_ok=True)
 
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 }
 
-# 获取虎牙一起看分类页面中的房间ID
-url = 'https://www.huya.com/g/2135'
-r = requests.get(url, headers=headers, timeout=15)
-html = r.text
+try:
+    r = requests.get("https://www.huya.com/g/2135", headers=headers, timeout=15)
+    html = r.text
+except Exception as e:
+    print(f"ERROR: {e}", file=sys.stderr)
+    sys.exit(1)
 
-# 从页面中提取房间ID，格式: https://www.huya.com/{room_id}
 room_ids = set()
-for m in re.finditer(r'https?://(?:www\.)?huya\.com/(\d+)', html):
+for m in re.finditer(r"https?://(?:www\.)?huya\.com/(\d+)", html):
     rid = m.group(1)
-    if len(rid) >= 4:  # 至少4位数字
+    if len(rid) >= 4:
         room_ids.add(rid)
 
-print(f"Huya: Found {len(room_ids)} room IDs")
+print(f"Huya: Found {len(room_ids)} room IDs", flush=True)
 
 results = []
 headers_m = {
-    'User-Agent': 'Mozilla/5.0 (Linux; Android 13; SM-S9080) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36'
+    "User-Agent": "Mozilla/5.0 (Linux; Android 13; SM-S9080) AppleWebKit/537.36 Mobile"
 }
 
-def get_huya_stream(room_id):
+def get_stream(room_id):
     try:
-        r = requests.get(f'https://m.huya.com/{room_id}', headers=headers_m, timeout=10)
+        r = requests.get(f"https://m.huya.com/{room_id}", headers=headers_m, timeout=10)
         html = r.text
-        
-        title_match = re.search(r'"sRoomName"\s*:\s*"([^"]+)"', html)
-        title = title_match.group(1) if title_match else 'Unknown'
-        
-        nick_match = re.search(r'"sNick"\s*:\s*"([^"]+)"', html)
-        nick = nick_match.group(1) if nick_match else 'Unknown'
-        
-        live_line_match = re.search(r'"liveLineUrl"\s*:\s*"([^"]+)"', html)
-        live_line_url = None
-        if live_line_match:
-            try:
-                decoded = base64.b64decode(live_line_match.group(1)).decode('utf-8')
-                live_line_url = 'https:' + decoded if decoded.startswith('/') else decoded
-            except Exception as e:
-                print(f"  Decode error {room_id}: {e}", file=sys.stderr)
-        
-        if live_line_url:
-            title_clean = title.replace('\\t', '').replace('\\n', '').strip()
-            title_clean = re.sub(r'[\\/:*?"<>|]', '', title_clean)
-            return {"title": title_clean, "nick": nick, "url": live_line_url, "room_id": room_id}
+        title = (re.search(r'"sRoomName"\s*:\s*"([^"]+)"', html) or [None, "Unknown"])[1]
+        nick = (re.search(r'"sNick"\s*:\s*"([^"]+)"', html) or [None, "Unknown"])[1]
+        ll_match = re.search(r'"liveLineUrl"\s*:\s*"([^"]+)"', html)
+        if ll_match:
+            decoded = base64.b64decode(ll_match.group(1)).decode("utf-8")
+            url = "https:" + decoded if decoded.startswith("/") else decoded
+            title = re.sub(r'[\/:*?"<>|]', "", title.replace("\t","").replace("\n","").strip())
+            return {"title": title, "nick": nick, "url": url, "room_id": room_id}
     except Exception as e:
         print(f"  Error {room_id}: {e}", file=sys.stderr)
     return None
 
-with ThreadPoolExecutor(max_workers=10) as executor:
-    futures = {executor.submit(get_huya_stream, rid): rid for rid in room_ids}
-    for future in as_completed(futures):
-        result = future.result()
-        if result:
-            results.append(result)
-            print(f"  ✓ {result['room_id']} - {result['title'][:30]}")
-        else:
-            pass  # 未开播或无流
+with ThreadPoolExecutor(max_workers=10) as ex:
+    futures = {ex.submit(get_stream, rid): rid for rid in room_ids}
+    for f in as_completed(futures):
+        r = f.result()
+        if r:
+            results.append(r)
+            print(f"  OK {r["room_id"]} - {r["title"][:30]}", flush=True)
 
-with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
+with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     json.dump(results, f, ensure_ascii=False, indent=2)
-
-print(f"Huya: Got {len(results)} valid streams, saved to {OUTPUT_FILE}")
+print(f"Huya: {len(results)} valid streams", flush=True)
