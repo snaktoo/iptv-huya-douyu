@@ -218,33 +218,36 @@ def classify_channel(title, nick='', quality=''):
     return "综合影视"
 
 
-# ===== 央视源：从 best-fan/iptv-sources 自动获取（每日更新） =====
-# 若获取失败则使用官方CDN保底（720p）
+# ===== 央视源：从多个源库聚合，每频道提供多条备选 =====
 
-CCTV_SOURCES_URL = "https://raw.githubusercontent.com/best-fan/iptv-sources/main/cn_cctv.m3u8"
-CCTV_LOCAL_CACHE = "/tmp/iptv_update/cn_cctv.m3u8"
+# 多个源库地址
+CCTV_SOURCE_URLS = {
+    "best-fan/iptv-sources": "https://raw.githubusercontent.com/best-fan/iptv-sources/main/cn_cctv.m3u8",
+    "cs3306/IPTV-Sources": "https://raw.githubusercontent.com/cs3306/IPTV-Sources/main/data/output/iptv_collection.m3u",
+    "BurningC4/Chinese-IPTV": "https://raw.githubusercontent.com/BurningC4/Chinese-IPTV/master/TV-IPV4.m3u",
+}
 
-# 官方保底源（已知最高720p）
-FALLBACK_CCTV = [
-    ("CCTV-1 综合", "CCTV1", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv1_1/index.m3u8?b=200-2100"),
-    ("CCTV-2 财经", "CCTV2", "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv2_1/index.m3u8?b=200-2100"),
-    ("CCTV-3 综艺", "CCTV3", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv3_1/index.m3u8?b=200-2100"),
-    ("CCTV-4 中文国际", "CCTV4", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv4_1/index.m3u8?b=200-2100"),
-    ("CCTV-5 体育", "CCTV5", "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv5_1/index.m3u8?b=200-2100"),
-    ("CCTV-5+ 体育赛事", "CCTV5+", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv5plus_1/index.m3u8?b=200-2100"),
-    ("CCTV-6 电影", "CCTV6", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv6_1/index.m3u8?b=200-2100"),
-    ("CCTV-7 国防军事", "CCTV7", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv7_1/index.m3u8?b=200-2100"),
-    ("CCTV-8 电视剧", "CCTV8", "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv8_1/index.m3u8?b=200-2100"),
-    ("CCTV-9 纪录", "CCTV9", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctvjilu_1/index.m3u8?b=200-2100"),
-    ("CCTV-10 科教", "CCTV10", "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv10_1/index.m3u8?b=200-2100"),
-    ("CCTV-11 戏曲", "CCTV11", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv11_1/index.m3u8?b=200-2100"),
-    ("CCTV-12 社会与法", "CCTV12", "https://ldocctvwbcdbd.a.bdydns.com/ldocctvwbcd/cdrmldcctv12_1/index.m3u8?b=200-2100"),
-    ("CCTV-13 新闻", "CCTV13", "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv13_1/index.m3u8?b=200-2100"),
-    ("CCTV-14 少儿", "CCTV14", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctvchild_1/index.m3u8?b=200-2100"),
-    ("CCTV-15 音乐", "CCTV15", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv15_1/index.m3u8?b=200-2100"),
-    ("CCTV-16 奥林匹克", "CCTV16", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv16_1/index.m3u8?b=200-2100"),
-    ("CCTV-17 农业农村", "CCTV17", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv17_1/index.m3u8?b=200-2100"),
-]
+# 官方保底源（已知最高720p，但广泛兼容）
+OFFICIAL_SOURCES = {
+    "CCTV-1": "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv1_1/index.m3u8?b=200-2100",
+    "CCTV-2": "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv2_1/index.m3u8?b=200-2100",
+    "CCTV-3": "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv3_1/index.m3u8?b=200-2100",
+    "CCTV-4": "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv4_1/index.m3u8?b=200-2100",
+    "CCTV-5": "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv5_1/index.m3u8?b=200-2100",
+    "CCTV-5+": "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv5plus_1/index.m3u8?b=200-2100",
+    "CCTV-6": "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv6_1/index.m3u8?b=200-2100",
+    "CCTV-7": "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv7_1/index.m3u8?b=200-2100",
+    "CCTV-8": "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv8_1/index.m3u8?b=200-2100",
+    "CCTV-9": "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctvjilu_1/index.m3u8?b=200-2100",
+    "CCTV-10": "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv10_1/index.m3u8?b=200-2100",
+    "CCTV-11": "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv11_1/index.m3u8?b=200-2100",
+    "CCTV-12": "https://ldocctvwbcdbd.a.bdydns.com/ldocctvwbcd/cdrmldcctv12_1/index.m3u8?b=200-2100",
+    "CCTV-13": "https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv13_1/index.m3u8?b=200-2100",
+    "CCTV-14": "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctvchild_1/index.m3u8?b=200-2100",
+    "CCTV-15": "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv15_1/index.m3u8?b=200-2100",
+    "CCTV-16": "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv16_1/index.m3u8?b=200-2100",
+    "CCTV-17": "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv17_1/index.m3u8?b=200-2100",
+}
 
 # 频道显示名称映射
 CCTV_NAMES = {
@@ -268,30 +271,24 @@ CCTV_NAMES = {
     "CCTV-17": "CCTV-17 农业农村", "CCTV17": "CCTV-17 农业农村",
 }
 
-def fetch_and_parse_cctv():
-    """从 best-fan/iptv-sources 下载央视源并解析，返回 [(显示名, 短名, URL)]"""
+def download_m3u(name, url, local_path):
+    """下载单个m3u文件"""
     import urllib.request
-    fetched = False
     try:
-        print("  [CCTV] 正在从 best-fan/iptv-sources 获取最新央视源...")
-        urllib.request.urlretrieve(CCTV_SOURCES_URL, CCTV_LOCAL_CACHE)
-        fetched = True
-        print(f"  [CCTV] 下载成功: {CCTV_LOCAL_CACHE}")
+        print(f"  [CCTV] 从 {name} 下载...")
+        urllib.request.urlretrieve(url, local_path)
+        return True
     except Exception as e:
-        print(f"  [CCTV] 下载失败: {e}")
-        # 使用本地缓存的版本（如果有）
-        if os.path.exists(CCTV_LOCAL_CACHE):
-            fetched = True
-            print(f"  [CCTV] 使用本地缓存: {CCTV_LOCAL_CACHE}")
+        print(f"  [CCTV] {name} 下载失败: {e}")
+        return False
 
-    if not fetched:
-        print("  [CCTV] 无法获取外部源，使用官方CDN保底（720p）")
-        return FALLBACK_CCTV
-
-    # 解析 m3u8
-    channels = {}  # short_name -> [(score, url)]
+def parse_m3u_to_cctv(filepath, source_name):
+    """解析 m3u 文件，提取 CCTV 频道URL，返回 {short: [(score, url)]}"""
+    channels = {}
+    if not os.path.exists(filepath):
+        return channels
     current_extinf = None
-    with open(CCTV_LOCAL_CACHE, 'r', encoding='utf-8') as f:
+    with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
         for line in f:
             line = line.strip()
             if line.startswith('#EXTINF:'):
@@ -302,42 +299,82 @@ def fetch_and_parse_cctv():
                     short = 'CCTV-' + m.group(1)
                     if short not in channels:
                         channels[short] = []
-                    # 评分：越高越好
                     score = 0
-                    if '1080p' in current_extinf or '1080P' in current_extinf:
+                    extinf_lower = current_extinf.lower()
+                    if '1080p' in extinf_lower or '4k' in extinf_lower:
                         score += 100
                     if '3m1080p' in line.lower():
                         score += 80
                     if '/1080p/' in line.lower() or '1080p' in line.lower():
                         score += 70
-                    if 'hd' in line.lower() or 'HD' in line:
+                    if 'hd' in line.lower() or '超清' in line:
                         score += 30
-                    if 'fanmingming' in current_extinf:
-                        score += 50
-                    if 'myqcloud' in line or 'volcfcdn' in line or 'bdydns' in line:
-                        score += 10  # 官方CDN保底
+                    if 'ottrrs' in line:  # 移动运营商源
+                        score += 20
+                    if 'testpub' in line or 'test2025' in line:
+                        score += 15
                     channels[short].append((score, line))
                 current_extinf = None
+    return channels
 
-    if not channels:
-        print("  [CCTV] 解析失败，使用官方CDN保底（720p）")
-        return FALLBACK_CCTV
+def fetch_cctv_sources():
+    """从所有源库拉取央视源，每频道返回多条URL"""
+    all_cctv = {}  # short -> set of urls (for dedup)
 
-    # 为每个频道选择最佳源
+    # 1. 官方CDN保底（最稳定）
+    for short, url in OFFICIAL_SOURCES.items():
+        all_cctv.setdefault(short, set()).add(url)
+
+    # 2. 从多个外部源库解析（优先使用已预下载的缓存）
+    tmpdir = "/tmp/iptv_update/cctv_sources"
+    os.makedirs(tmpdir, exist_ok=True)
+
+    source_files = [
+        ("best-fan/iptv-sources", f"{tmpdir}/bestfan.m3u", "https://raw.githubusercontent.com/best-fan/iptv-sources/main/cn_cctv.m3u8"),
+        ("cs3306/IPTV-Sources", f"{tmpdir}/cs3306_IPTV-Sources.m3u", "https://raw.githubusercontent.com/cs3306/IPTV-Sources/main/data/output/iptv_collection.m3u"),
+        ("BurningC4/Chinese-IPTV", f"{tmpdir}/BurningC4.m3u", "https://raw.githubusercontent.com/BurningC4/Chinese-IPTV/master/TV-IPV4.m3u"),
+    ]
+
+    for name, local_path, remote_url in source_files:
+        if not os.path.exists(local_path):
+            # 尝试下载
+            import urllib.request
+            try:
+                print(f"  [CCTV] 从 {name} 下载...")
+                urllib.request.urlretrieve(remote_url, local_path)
+            except Exception as e:
+                print(f"  [CCTV] {name} 下载失败: {e}")
+                continue
+        parsed = parse_m3u_to_cctv(local_path, name)
+        for short, items in parsed.items():
+            items.sort(key=lambda x: -x[0])
+            for score, u in items[:3]:
+                all_cctv.setdefault(short, set()).add(u)
+
+    # 4. 构建结果
+    order = [f'CCTV-{i}' for i in range(1, 18)]
+    idx_5 = order.index('CCTV-5') + 1
+    order.insert(idx_5, 'CCTV-5+')
+
     result = []
-    for short, items in channels.items():
-        items.sort(key=lambda x: -x[0])  # 分数高的优先
-        best_url = items[0][1]
-        # 查找显示名
+    total_urls = 0
+    for short in order:
+        if short not in all_cctv:
+            continue
+        urls = list(all_cctv[short])
+        # 去重：相同域名+路径(去参)只保留一个
+        seen = set()
+        unique_urls = []
+        for u in urls:
+            key = u.split('?')[0]
+            if key not in seen:
+                seen.add(key)
+                unique_urls.append(u)
         display = CCTV_NAMES.get(short, short)
-        result.append((display, short, best_url))
+        result.append((display, short, unique_urls))
+        total_urls += len(unique_urls)
 
-    # 按标准顺序排序
-    order = [f'CCTV-{i}' for i in range(1, 18)] + ['CCTV-5+']
-    result.sort(key=lambda x: order.index(x[1]) if x[1] in order else 999)
-
-    found = len(result)
-    print(f"  [CCTV] 从外部源获取到 {found} 个频道（按质量评分择优选用）")
+    print(f"  [CCTV] 从 {len(CCTV_SOURCE_URLS)}+2 个源库聚合了 {len(result)} 个频道，共 {total_urls} 条备选URL")
     return result
 
 # ===== 读取数据并分类 =====
@@ -395,9 +432,8 @@ def load_and_classify(filepath, source_name):
 huya_channels = load_and_classify(HUYA_FILE, "Huya")
 douyu_channels = load_and_classify(DOUYU_FILE, "Douyu")
 
-# ===== 获取央视源（自动选择最佳可用源） =====
-CCTV_CHANNELS = fetch_and_parse_cctv()
-cctv_source_type = "自动获取（最优质量）" if CCTV_CHANNELS is not FALLBACK_CCTV else "官方CDN保底（720p）"
+# ===== 获取央视源（从多个源库聚合，每频道多条备选） =====
+CCTV_CHANNELS = fetch_cctv_sources()  # [(显示名, 短名, [URL列表])]
 
 # ===== 按分类组名排序输出 =====
 # 自定义分类显示顺序
@@ -418,8 +454,8 @@ now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 lines.append('#EXTM3U')
 lines.append(f'# 综合IPTV直播源 (央视 + 虎牙1080P + 斗鱼1080P)')
 lines.append(f'# 生成时间: {now_str}')
-lines.append('# 来源: best-fan/iptv-sources（央视动态择优）| 虎牙一起看分类 | 斗鱼一起看分类')
-lines.append(f'# 清晰度: 央视{cctv_source_type} / 虎牙1080P蓝光 / 斗鱼1080P原画')
+lines.append('# 来源: 多源库聚合(best-fan + cs3306 + BurningC4 + 官方CDN) | 虎牙一起看分类 | 斗鱼一起看分类')
+lines.append('# 清晰度: 央视多源备选（优先1080p，支持切换） / 虎牙1080P蓝光 / 斗鱼1080P原画')
 lines.append('# 自动更新: GitHub Actions 每30分钟')
 lines.append('# 分类: 按影视内容类型自动归类')
 lines.append('')
@@ -427,8 +463,10 @@ lines.append('')
 # 构建分类→频道映射
 cat_map = {}
 
-# 央视
-cat_map["央视"] = [(name, url) for name, _, url in CCTV_CHANNELS]
+# 央视（每频道多条备选，同名不同URL）
+for name, _, urls in CCTV_CHANNELS:
+    for url in urls:
+        cat_map.setdefault("央视", []).append((name, url))
 
 # 虎牙+斗鱼
 all_stream = huya_channels + douyu_channels
@@ -458,7 +496,7 @@ if os.path.exists(FINAL_FILE):
     os.remove(FINAL_FILE)
 shutil.copy2(OUTPUT_FILE, FINAL_FILE)
 
-cctv_count = len(CCTV_CHANNELS)
+cctv_count = sum(len(urls) for _, _, urls in CCTV_CHANNELS)
 huya_count = len(huya_channels)
 douyu_count = len(douyu_channels)
 
