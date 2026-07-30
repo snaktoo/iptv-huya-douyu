@@ -15,7 +15,7 @@ lines.append('#EXTM3U')
 lines.append('# 虎牙+斗鱼 影视轮播直播源')
 lines.append(f'# 生成时间: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
 lines.append('# 来源: 虎牙一起看分类 & 斗鱼一起看分类')
-lines.append('# 自动更新脚本: https://github.com/your-repo/iptv-huya-douyu')
+lines.append('# 自动更新脚本: https://github.com/snaktoo/iptv-huya-douyu')
 lines.append('#')
 lines.append('')
 

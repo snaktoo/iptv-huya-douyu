@@ -55,6 +55,11 @@ def is_movie_room(room_name, nickname):
 
 movie_rooms = [r for r in all_rooms if is_movie_room(r.get('rn','') or '', r.get('nn','') or '')]
 print(f"Douyu: {len(movie_rooms)} are movie-related", flush=True)
+# Top30 by online count
+movie_rooms.sort(key=lambda r: r.get("ol",0) or 0, reverse=True)
+movie_rooms = movie_rooms[:30]
+print(f"Douyu: Top 30 hottest movie rooms selected", flush=True)
+
 
 if not movie_rooms:
     # 保存空结果并退出
