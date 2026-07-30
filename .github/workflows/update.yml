@@ -1,9 +1,7 @@
 name: Update IPTV Playlist
-
 on:
   schedule:
     - cron: '*/30 * * * *'
-  workflow_dispatch:
   push:
     branches: [main]
 
@@ -14,79 +12,31 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Install dependencies
+      - name: Install deps
         run: |
           pip install requests
           pip install ykdl
-
-      - name: Create output directory
+      - name: Create output dir
         run: mkdir -p /tmp/iptv_update
-
-      - name: Fetch Huya streams
+      - name: Fetch Huya
         run: python scripts/fetch_huya.py
-
-      - name: Fetch Douyu streams
+      - name: Fetch Douyu
         run: python scripts/fetch_douyu.py
-
       - name: Generate M3U
         run: python scripts/merge_m3u.py
-
-      - name: Copy M3U to repo root
+      - name: Copy M3U
         run: |
           if [ -f /tmp/iptv_update/huya_douyu_movie.m3u ]; then
             cp /tmp/iptv_update/huya_douyu_movie.m3u huya_douyu_movie.m3u
-            echo "M3U file copied successfully"
-          else
-            echo "No M3U file generated"
-            ls -la /tmp/iptv_update/ 2>/dev/null || echo "No /tmp/iptv_update/"
           fi
-
-      - name: Update README
-        run: |
-          if [ -f huya_douyu_movie.m3u ]; then
-            CHANNELS=$(grep -c '^#EXTINF' huya_douyu_movie.m3u || echo 0)
-            HUYA=$(grep -c 'group-title="虎牛影视"' huya_douyu_movie.m3u || echo 0)
-            DOUYU=$(grep -c 'group-title="斗鱼影视"' huya_douyu_movie.m3u || echo 0)
-            cat > README.md << READEOF
-# 虎牛+斗鱼 影视轮播IPTV直播源
-
-## 最新更新
-- **更新时间**: $(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')
-- **频道总数**: $CHANNELS
-- **虎牛**: $HUYA 个 (HLS/m3u8)
-- **斗鱼**: $DOUYU 个 (FLV)
-
-## 播放列表地址
-
-```
-https://raw.githubusercontent.com/\${{ github.repository }}/main/huya_douyu_movie.m3u
-```
-
-## 说明
-- 所有地址均有**时效性**（通常几小时~1天）
-- 本仓库通过 GitHub Actions **每30分钟**自动更新一次
-- 虎牛流为 HLS (m3u8) 格式，斗鱼流为 FLV 格式
-- 斗鱼频道标题后标注了画质（如 1080P60）
-
-## 使用方式
-1. 复制上方播放列表地址
-2. 在 IPTV 播放器（如 VLC、PotPlayer、IPTV Smarters 等）中打开
-3. 或直接导入支持 M3U 格式的电视/盒子应用
-READEOF
-          fi
-
-      - name: Commit and push
+      - name: Commit & push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add huya_douyu_movie.m3u README.md
-          git diff --quiet && git diff --staged --quiet ||             git commit -m "Auto-update IPTV playlist $(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M')"
+          git add huya_douyu_movie.m3u
+          git diff --quiet && git diff --staged --quiet || git commit -m "auto update $(date +%s)"
           git push
