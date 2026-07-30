@@ -341,10 +341,8 @@ def parse_m3u_to_cctv(filepath, source_name):
                         if m_any:
                             short = 'CCTV-' + m_any.group(1)
                 if short:
-                    # 频道映射校验：URL路径必须与声明的频道名一致
+                    # 频道映射校验
                     if not url_matches_channel(short, line):
-                        # 记录已过滤的映射错误（调试用）
-                        pass
                         continue
                     if is_known_dead_source(line):
                         continue
@@ -352,16 +350,29 @@ def parse_m3u_to_cctv(filepath, source_name):
                         channels[short] = []
                     score = 0
                     extinf_lower = current_extinf.lower()
+                    url_lower = line.lower()
+                    # ===== 真正可用的源类型（已验证TS分片有效）=====
+                    if 'key=txiptv' in url_lower:
+                        score += 500
+                    # ===== 可能可用的源（加分）=====
                     if '1080p' in extinf_lower or '4k' in extinf_lower:
                         score += 100
-                    if '3m1080p' in line.lower():
-                        score += 80
-                    if '/1080p/' in line.lower() or '1080p' in line.lower():
+                    if '/1080p/' in url_lower or '1080p' in url_lower:
                         score += 70
-                    if 'hd' in line.lower() or '超清' in line:
+                    # ===== 已知假源（降权）=====
+                    if 'testpub' in url_lower or 'test2025' in url_lower or 'test20251009' in url_lower:
+                        score -= 200
+                    if 'zbdq5' in url_lower:
+                        score -= 150
+                    if '3m1080p' in url_lower:
+                        score -= 100
+                    if '74.91.26.218' in url_lower or '198.204.228.26' in url_lower or '69.30.245.50' in url_lower or '107.150.60.122' in url_lower or '192.151.150.154' in url_lower or '173.208.212.130' in url_lower:
+                        score -= 100
+                    if 'play.kankanlive.com' in url_lower:
+                        score -= 200
+                    # ===== 一般加分 =====
+                    if 'hd' in url_lower or '超清' in url_lower:
                         score += 30
-                    if 'testpub' in line or 'test2025' in line:
-                        score += 15
                     channels[short].append((score, line))
                 current_extinf = None
     return channels
@@ -539,6 +550,13 @@ for cat, display, url, quality in douyu_channels:
 # 按 央视 → 虎牙 → 斗鱼 顺序输出
 source_order = ["央视", "虎牙", "斗鱼"]
 
+# EXTVLCOPT头设置（用于防盗链）
+REFERER_MAP = {
+    "虎牙": "https://www.huya.com/",
+    "斗鱼": "https://www.douyu.com/",
+    "央视": None,  # 官方CDN不需要Referer
+}
+
 for src in source_order:
     channels = source_map.get(src, [])
     if not channels:
@@ -546,8 +564,12 @@ for src in source_order:
     lines.append('')
     lines.append(f'# ===== {src} =====')
     lines.append('')
+    referer = REFERER_MAP.get(src)
     for display, url in channels:
         lines.append(f'#EXTINF:-1 group-title="{src}" tvg-name="{display}",{display}')
+        if referer:
+            lines.append(f'#EXTVLCOPT:http-referrer={referer}')
+            lines.append('#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
         lines.append(url)
 
 content = '\n'.join(lines)
