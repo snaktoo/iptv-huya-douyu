@@ -518,28 +518,36 @@ lines.append('# 分类: 按影视内容类型自动归类')
 lines.append('')
 
 # 构建分类→频道映射
-cat_map = {}
+# 按来源分组：央视 / 虎牙 / 斗鱼
+source_map = {}
 
 # 央视（每频道多条备选，同名不同URL）
 for name, _, urls in CCTV_CHANNELS:
     for url in urls:
-        cat_map.setdefault("央视", []).append((name, url))
+        source_map.setdefault("央视", []).append((name, url))
 
-# 虎牙+斗鱼
-all_stream = huya_channels + douyu_channels
-for cat, display, url, quality in all_stream:
-    cat_map.setdefault(cat, []).append((display, url))
+# 虎牙：带影视分类标签
+for cat, display, url, quality in huya_channels:
+    tagged = f"[{cat}] {display}" if cat not in ("综合影视",) else display
+    source_map.setdefault("虎牙", []).append((tagged, url))
 
-# 按顺序输出
-for cat in sorted(cat_map.keys(), key=cat_sort_key):
-    channels = cat_map[cat]
+# 斗鱼：带影视分类标签
+for cat, display, url, quality in douyu_channels:
+    tagged = f"[{cat}] {display}" if cat not in ("综合影视",) else display
+    source_map.setdefault("斗鱼", []).append((tagged, url))
+
+# 按 央视 → 虎牙 → 斗鱼 顺序输出
+source_order = ["央视", "虎牙", "斗鱼"]
+
+for src in source_order:
+    channels = source_map.get(src, [])
     if not channels:
         continue
     lines.append('')
-    lines.append(f'# ===== {cat} =====')
+    lines.append(f'# ===== {src} =====')
     lines.append('')
     for display, url in channels:
-        lines.append(f'#EXTINF:-1 group-title="{cat}" tvg-name="{display}",{display}')
+        lines.append(f'#EXTINF:-1 group-title="{src}" tvg-name="{display}",{display}')
         lines.append(url)
 
 content = '\n'.join(lines)
@@ -558,12 +566,9 @@ huya_count = len(huya_channels)
 douyu_count = len(douyu_channels)
 
 print(f"M3U: Generated {OUTPUT_FILE}")
-print(f"  CCTV: {cctv_count} channels")
-print(f"  Huya: {huya_count} channels (1080P)")
-print(f"  Douyu: {douyu_count} channels (1080P)")
-print(f"  Total: {cctv_count + huya_count + douyu_count} channels")
-print(f"  Categories:")
-for cat in sorted(cat_map.keys(), key=cat_sort_key):
-    chs = cat_map[cat]
-    print(f"    {cat}: {len(chs)}")
+print(f"  ️央视: {cctv_count} channels ({len(CCTV_CHANNELS)}个频道, 每频道多备选源)")
+print(f"  虎牙: {huya_count} channels (1080P蓝光)")
+print(f"  斗鱼: {douyu_count} channels (1080P原画)")
+print(f"  总计: {cctv_count + huya_count + douyu_count} channels")
+print(f"  分组: 央视 / 虎牙 / 斗鱼（频道名前带[影视分类]标签）")
 print(f"  Saved to: {FINAL_FILE}")
