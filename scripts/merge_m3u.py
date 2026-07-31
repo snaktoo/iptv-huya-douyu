@@ -38,64 +38,97 @@ def resolve_url(base_url, path):
 def test_source_chain(master_url, timeout_per_step=8):
     """
     全链路测试直播源：主m3u8 → 子流m3u8 → 最新TS分片(1KB) → 验证是MPEG-TS
+    支持两种HLS类型：
+      Type A: variant playlist (#EXT-X-STREAM-INF) → 解析子流 → 提取TS → 验证
+      Type B: 媒体plalist (直接#EXTINF + .ts) → 直接提取TS → 验证
     返回 (is_ok, detail, verified_sub_url_or_None)
     """
-    # Step 1: 主m3u8
     rc, out, _ = run_cmd(f"timeout {timeout_per_step} curl -skL '{master_url}'", timeout_per_step+2)
     if rc != 0 or not out:
         return False, f"master_fail(rc={rc})", None
     text = out.decode('utf-8', errors='replace')
+    lines = text.split('\n')
     
-    sub_paths = [l.strip() for l in text.split('\n') 
-                 if l.strip() and not l.startswith('#') and not l.startswith('<')]
-    if not sub_paths:
-        return False, "no_sub_paths", None
+    # 判断类型：是否包含 #EXT-X-STREAM-INF (variant)
+    is_variant = any('EXT-X-STREAM-INF' in l for l in lines)
     
-    # Step 2: 试子流（最多3个）
-    for sp in sub_paths[:3]:
-        sub_url = resolve_url(master_url, sp)
-        rc, out, _ = run_cmd(f"timeout {timeout_per_step} curl -skL '{sub_url}'", timeout_per_step+2)
-        if rc != 0 or not out:
-            continue
+    if is_variant:
+        # Type A: variant playlist → 提取子流URL → 测试子流
+        sub_paths = [l.strip() for l in lines 
+                     if l.strip() and not l.startswith('#') and not l.startswith('<')]
+        if not sub_paths:
+            return False, "variant_no_sub", None
         
-        sub_text = out.decode('utf-8', errors='replace')
-        ts_lines = []
-        for line in sub_text.split('\n'):
-            ls = line.strip()
-            if ls and not ls.startswith('#') and not ls.startswith('<'):
-                if ls.endswith('.ts') or '.ts?' in ls.lower():
-                    ts_lines.append(ls)
+        for sp in sub_paths[:3]:
+            sub_url = resolve_url(master_url, sp)
+            rc, out, _ = run_cmd(f"timeout {timeout_per_step} curl -skL '{sub_url}'", timeout_per_step+2)
+            if rc != 0 or not out:
+                continue
+            sub_text = out.decode('utf-8', errors='replace')
+            
+            # 从子流中提取TS分片路径
+            ts_paths = _extract_ts_paths(sub_text)
+            if not ts_paths:
+                continue
+            
+            ok, detail = _verify_ts(ts_paths[-1], sub_url)
+            if ok:
+                return True, detail, sub_url
         
-        if not ts_lines:
-            continue
+        return False, f"variant_no_ts(tried={len(sub_paths)})", None
+    else:
+        # Type B: 媒体playlist (可能直接包含#EXTINF+.ts分片)
+        ts_paths = _extract_ts_paths(text)
+        if not ts_paths:
+            # 可能这个URL本身返回的就是非m3u8内容
+            return False, "media_no_ts", None
         
-        # Step 3: 取最新TS分片验证
-        ts_path = ts_lines[-1]
-        ts_url = resolve_url(sub_url, ts_path)
-        
-        rc2, out2, _ = run_cmd(
-            f"timeout 6 curl -skL -r 0-1023 -o /tmp/_ts_check '{ts_url}' "
-            f"&& file /tmp/_ts_check", 8)
-        file_type = out2.decode('utf-8', errors='replace').strip()
-        
-        rc3, out3, _ = run_cmd(
-            f"timeout 6 curl -skL -r 0-1023 -o /dev/null -w '%{{http_code}}|%{{size_download}}' '{ts_url}'", 8)
-        http_info = out3.decode('utf-8', errors='replace').strip()
-        http_code = http_info.split('|')[0] if '|' in http_info else http_info
-        
-        is_valid = ('mpeg' in file_type.lower() or 'data' in file_type.lower()) \
-                   and http_code in ('200', '206')
-        
-        if is_valid:
-            return True, f"OK(http={http_code} type={file_type[:25]})", sub_url
+        ok, detail = _verify_ts(ts_paths[-1], master_url)
+        if ok:
+            return True, detail, master_url
+        return False, f"media_ts_fail({detail})", None
+
+
+def _extract_ts_paths(playlist_text):
+    """从playlist文本中提取所有TS分片路径"""
+    lines = playlist_text.split('\n')
+    ts_paths = []
+    for i, line in enumerate(lines):
+        ls = line.strip()
+        if ls.startswith('#EXTINF:'):
+            if i+1 < len(lines):
+                path = lines[i+1].strip()
+                if path and not path.startswith('#') and not path.startswith('<'):
+                    ts_paths.append(path)
+    return ts_paths
+
+
+def _verify_ts(ts_path, base_url):
+    """下载TS分片前1KB并验证为MPEG-TS，返回 (ok, detail)"""
+    ts_url = resolve_url(base_url, ts_path)
     
-    return False, f"no_ts_working(tried={len(sub_paths)})", None
+    rc2, out2, _ = run_cmd(
+        f"timeout 6 curl -skL -r 0-1023 -o /tmp/_ts_check '{ts_url}' "
+        f"&& file /tmp/_ts_check", 8)
+    file_type = out2.decode('utf-8', errors='replace').strip()
+    
+    rc3, out3, _ = run_cmd(
+        f"timeout 6 curl -skL -r 0-1023 -o /dev/null -w '%{{http_code}}|%{{size_download}}' '{ts_url}'", 8)
+    http_info = out3.decode('utf-8', errors='replace').strip()
+    http_code = http_info.split('|')[0] if '|' in http_info else http_info
+    
+    is_valid = ('mpeg' in file_type.lower() or 'data' in file_type.lower()) \
+               and http_code in ('200', '206')
+    
+    detail = f"http={http_code} type={file_type[:25]}"
+    return is_valid, detail
 
 
 # ============ 央视源：官方CDN + 外部库动态验证 ============
 
 CCTV_CANDIDATES = {
-    "CCTV-1":  [("volcfcdn", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv1_1/index.m3u8?b=200-2100")],
+    "CCTV-1":  [("volcfcdn", "https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv1_1/index.m3u8?b=200-2100"),
+                ("VOC",      "https://liveplay-srs.voc.com.cn/hls/tv/134_180adf.m3u8")],
     "CCTV-2":  [("myqcloud","https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv2_1/index.m3u8?b=200-2100"),
                 ("volcfcdn","https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv2_1/index.m3u8?b=200-2100")],
     "CCTV-3":  [("volcfcdn","https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv3_1/index.m3u8?b=200-2100"),
@@ -113,12 +146,15 @@ CCTV_CANDIDATES = {
     "CCTV-9":  [("volcfcdn","https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctvjilu_1/index.m3u8?b=200-2100")],
     "CCTV-10": [("myqcloud","https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv10_1/index.m3u8?b=200-2100"),
                 ("volcfcdn","https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv10_1/index.m3u8?b=200-2100")],
-    "CCTV-11": [("volcfcdn","https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv11_1/index.m3u8?b=200-2100")],
+    "CCTV-11": [("volcfcdn","https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv11_1/index.m3u8?b=200-2100"),
+                ("xykt",    "https://xykt-fix.github.io/play/a02b/index.m3u8")],
     "CCTV-12": [("bdydns",  "https://ldocctvwbcdbd.a.bdydns.com/ldocctvwbcd/cdrmldcctv12_1/index.m3u8?b=200-2100"),
                 ("volcfcdn","https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv12_1/index.m3u8?b=200-2100")],
     "CCTV-13": [("myqcloud","https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv13_1/index.m3u8?b=200-2100"),
-                ("volcfcdn","https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv13_1/index.m3u8?b=200-2100")],
+                ("volcfcdn","https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv13_1/index.m3u8?b=200-2100"),
+                ("myqcloud_td","https://ldncctvwbcdtxy.liveplay.myqcloud.com/ldncctvwbcd/cdrmldcctv13_1_td.m3u8")],
     "CCTV-14": [("volcfcdn","https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctvchild_1/index.m3u8?b=200-2100")],
+    "CCTV-15": [("xykt",    "https://xykt-fix.github.io/play/a02e/index.m3u8")],
     "CCTV-16": [("volcfcdn","https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv16_1/index.m3u8?b=200-2100")],
     "CCTV-17": [("volcfcdn","https://ldncctvwbcdbyte.volcfcdn.com/ldncctvwbcd/cdrmldcctv17_1/index.m3u8?b=200-2100")],
 }
@@ -131,6 +167,7 @@ CCTV_NAMES = {
     "CCTV-9": "CCTV-9 纪录", "CCTV-10": "CCTV-10 科教",
     "CCTV-11": "CCTV-11 戏曲", "CCTV-12": "CCTV-12 社会与法",
     "CCTV-13": "CCTV-13 新闻", "CCTV-14": "CCTV-14 少儿",
+    "CCTV-15": "CCTV-15 音乐",
     "CCTV-16": "CCTV-16 奥林匹克", "CCTV-17": "CCTV-17 农业农村",
 }
 
@@ -138,6 +175,7 @@ CCTV_LIB_URLS = [
     ("best-fan", "https://raw.githubusercontent.com/best-fan/iptv-sources/main/cn_cctv.m3u8"),
     ("cs3306", "https://raw.githubusercontent.com/cs3306/IPTV-Sources/main/data/output/iptv_collection.m3u"),
     ("BurningC4", "https://raw.githubusercontent.com/BurningC4/Chinese-IPTV/master/TV-IPV4.m3u"),
+    ("iptv-org", "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cn.m3u"),
 ]
 
 def download_external_cctv_sources():
@@ -183,13 +221,14 @@ def fetch_cctv_sources():
             print(f"  {status} {ch_short} ({cdn_type}): {detail[:60]}")
             if ok:
                 verified.setdefault(ch_short, []).append((CCTV_NAMES[ch_short], master_url))
-                break
+                if len(verified[ch_short]) >= 2:
+                    break  # 每个频道最多保留2个备选源
     
     print(f"\n  [CCTV] 阶段2: 外部库源验证...")
     lib_channels = download_external_cctv_sources()
     for ch_short in sorted(CCTV_NAMES, key=lambda x: int(x.split('-')[1].split('+')[0])):
         if ch_short in verified:
-            continue
+            continue  # 阶段1已有可用源，不再补充
         if ch_short not in lib_channels:
             continue
         for url, lib_name in lib_channels[ch_short]:
