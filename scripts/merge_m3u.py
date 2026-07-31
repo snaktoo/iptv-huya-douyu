@@ -319,7 +319,6 @@ lines.append('# 更新: GitHub Actions 每30分钟')
 
 lines.append('')
 source_map = {}
-REFERER_MAP = {"虎牙": "https://www.huya.com/", "斗鱼": "https://www.douyu.com/", "央视": None}
 
 for name, short, urls in CCTV_CHANNELS:
     for url in urls:
@@ -331,18 +330,16 @@ for cat, display, url, quality in douyu_channels:
     tagged = f"[{cat}] {display}" if cat != "综合影视" else display
     source_map.setdefault("斗鱼", []).append((tagged, url))
 
+# 注意: 不输出#EXTVLCOPT，因为ExoPlayer/主流Android播放器不识别
+# 斗鱼流不需要Referer即可播放，虎牙流即使加Referer也有时效性
 for src in ["央视", "虎牙", "斗鱼"]:
     channels = source_map.get(src, [])
     if not channels:
         continue
     lines.append('')
     lines.append(f'# ===== {src} =====')
-    referer = REFERER_MAP.get(src)
     for display, url in channels:
         lines.append(f'#EXTINF:-1 group-title="{src}" tvg-name="{display}",{display}')
-        if referer:
-            lines.append(f'#EXTVLCOPT:http-referrer={referer}')
-            lines.append('#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
         lines.append(url)
 
 content = '\n'.join(lines)
